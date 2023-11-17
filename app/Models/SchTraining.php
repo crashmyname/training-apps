@@ -11,4 +11,9 @@ class SchTraining extends Model
     public $table = 'schedule';
     protected $guarded = ['schedule_id'];
     protected $primaryKey = 'schedule_id';
+
+    public function datatrain()
+    {
+        return $this->belongsTo(DataTrain::class,'schedule_id','schedule_id');
+    }
 }

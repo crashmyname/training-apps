@@ -185,8 +185,8 @@
                         <th>No</th>
                         <th>NIK</th>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>Section</th>
+                        <th>Training Materials</th>
+                        <th>Quest & Feedback</th>
                         <th>Role</th>
                         <th>Foto</th>
                     </tr>

@@ -100,12 +100,13 @@
                                             <label>Section</label>
                                         </div>
                                         <div class="col-md-8 form-group">
-                                            <select class="form-control" name="section">
+                                            <select class="choices form-select" name="section">
                                                 <option value="">-- Pilih --</option>
-                                                <option value="All">All</option>
+                                                <option value="ALL">ALL</option>
                                                 @foreach ($resultDept as $dept)
                                                 <option value="{{$dept['kode_section']}}">{{$dept['kode_section']}}</option>
                                                 @endforeach
+                                                <option value="OTHERS">OTHERS</option>
                                             </select>
                                         </div>
                                         <div class="col-md-4">
@@ -225,12 +226,13 @@
                                             <label>Section</label>
                                         </div>
                                         <div class="col-md-8 form-group">
-                                            <select class="form-control" name="section">
+                                            <select class="choices form-select" name="section">
                                                 <option value="">-- Pilih --</option>
-                                                <option value="All">All</option>
+                                                <option value="ALL">ALL</option>
                                                 @foreach ($resultDept as $dept)
                                                 <option value="{{$dept['kode_section']}}">{{$dept['kode_section']}}</option>
                                                 @endforeach
+                                                <option value="OTHERS">OTHERS</option>
                                             </select>
                                         </div>
                                         <div class="col-md-4">
@@ -306,7 +308,7 @@
                 </div>
             </div>
             Action : <button type="submit" title="info" class="btn icon btn-primary" id="showModalButton"><i class="bi bi-info-circle"></i></button> |
-            <div class="modal fade" id="karyawanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -317,7 +319,7 @@
                         </div>
                         <div class="modal-body">
                             <!-- Tempatkan Informasi Training yang dipilih di sini -->
-                            <div id="selectedKaryawanInfo"></div>
+                            <div id="selectedScheduleInfo"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -326,18 +328,18 @@
                 </div>
             </div>           
             <button type="submit" id="editModalButton" title="edit user" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></button> | 
-            <div class="modal fade" id="karyawanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="scheduleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Information Training</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Update Training</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <!-- Tempatkan Informasi Training yang dipilih di sini -->
-                            <div id="selectedKaryawanInfo"></div>
+                            <div id="selectedScheduleEdit"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -346,7 +348,7 @@
                 </div>
             </div>  
             <button type="submit" id="delete" title="delete user" class="btn icon btn-danger"><i class="bi bi-trash"></i></button> |
-            <button type="button" class="btn icon btn-info" title="Add Emp"><i class="bi bi-person-add"></i></button>
+            <a id="addParticipants" type="button" title="Add Participants" class="btn btn-info"><i class="bi bi-person-add"></i></a>
         </div>        
         <div class="card-body">
             <table class='table table-striped' id="table1">
@@ -378,7 +380,7 @@
   $(document).ready(function () {
       dataTable = $('#table1').DataTable({
           processing: true,
-          serverSide: true,
+          serverside: true,
           responsive: true,
           select: true,
           ajax: '{{route('schedule')}}',
@@ -477,7 +479,7 @@
       });
       $('#showModalButton').on('click', function () {
         var selectedData = dataTable.rows({ selected: true }).data();
-        var modalContent = $('#selectedKaryawanInfo');
+        var modalContent = $('#selectedScheduleInfo');
 
         modalContent.empty(); // Kosongkan konten modal sebelum menambahkan informasi baru
 
@@ -504,7 +506,7 @@
                 minute: '2-digit',
                 second: '2-digit',
                 });
-                info += '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td class="form-control">' + data.nik + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.name + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Email' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.email + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.section + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Picture' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.foto + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Created at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedCreatedAt + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Updated at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedUpdatedAt + '</td>' + '</tr>';
+                info += '<tr>' + '<td width="15%">' + 'Name Training' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td class="form-control">' + data.name_training + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Name Trainer' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.name_trainer + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.section + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Plan' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.plan + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Re-Plan 1' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.replan1 + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Re-Plan 2' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.replan2 + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'Re-Plan 3' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.replan3 + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'Actual Date' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.actual + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'Number of Participants' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.participants + '</td>' + '</tr>' + '<tr>' + '<td>' + 'PIC' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.pic + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'Due Date' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.duedate + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'Status Monitoring' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.statusmonitor + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'Desc' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.desc + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'Created at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedCreatedAt + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Updated at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedUpdatedAt + '</td>' + '</tr>';
             });
             info += '</table>';
             modalContent.html(info);
@@ -513,11 +515,11 @@
             modalContent.html('No data selected.');
         }
 
-        $('#karyawanModal').modal('show'); // Tampilkan modal
+        $('#scheduleModal').modal('show'); // Tampilkan modal
         });
       $('#editModalButton').on('click', function () {
         var selectedData = dataTable.rows({ selected: true }).data();
-        var modalContent = $('#selectedKaryawanInfo');
+        var modalContent = $('#selectedScheduleEdit');
 
         modalContent.empty(); // Kosongkan konten modal sebelum menambahkan informasi baru
 
@@ -533,12 +535,27 @@
                     minute: '2-digit',
                     second: '2-digit',
                 });
-                var editData = "{{ url('/user') }}";
-                var foto = "{{asset('storage/profil-user/')}}";
+                var editData = "{{ url('/scheduletraining') }}";
+                // var foto = "{{asset('storage/profil-user/')}}";
                 var csrf = '@csrf';
-                var iD = data.uid;
-                var info = '<form class="form form-control" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post">' + csrf +'<table>' + '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '" readonly>' + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '" readonly>' + '<tr>' + '<td>' + 'Email' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="email" name="email" class="form-control" value="' + data.email + '">' + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '">' + '</tr>' + '<tr>' + '<td>' + 'Password' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="password" name="password" class="form-control" value="" >' + '</tr>' + '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
-                console.log(data.uid);
+                var iD = data.schedule_id;
+                var info = '<form class="form form-control" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post">' + csrf +
+                    '<table>' + 
+                        '<tr>' + '<td width="15%">' + 'Name Training' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="name_training" class="form-control" value="' + data.name_training + '">' + '</td>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Name Trainer' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name_trainer" class="form-control" value="' + data.name_trainer + '">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '">' + '</td>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Plan' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="plan" class="form-control" value="' + data.plan + '">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Re-plan 1' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="replan1" class="form-control" value="' + data.replan1 + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Re-plan 2' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="replan2" class="form-control" value="' + data.replan2 + '">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Re-plan 3' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="replan3" class="form-control" value="' + data.replan3 + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Actual' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="actual" class="form-control" value="' + data.actual + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Number of participants' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="participants" class="form-control" value="' + data.participants + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Pic' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="pic" class="form-control" value="' + data.pic + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Due Date' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="duedate" class="form-control" value="' + data.duedate + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Status Monitoring' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="statusmonitor" class="form-control" value="' + data.statusmonitor + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Desc' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="desc" class="form-control" value="' + data.desc + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
+                console.log(data.schedule_id);
                 modalContent.html(info);
             });
         } else {
@@ -546,7 +563,37 @@
             modalContent.html('No data selected.');
         }
 
-        $('#karyawanModal').modal('show'); // Tampilkan modal
+        $('#scheduleModal1').modal('show'); // Tampilkan modal
+        });
+        $('#addParticipants').on('click', function(){
+            var selectData = dataTable.rows({ selected: true}).data();
+            if (selectData.length > 0) {
+                    selectData.each(function (data) {
+                        const idSchedule = data.schedule_id;
+                        window.location.href="{{url('/addparticipants')}}"+"/"+idSchedule;
+                        var link = $('<a>', {
+                            href: url,
+                            text: 'Go to Add Participants',
+                            class: 'btn btn-primary',
+                        });
+
+                        // Tambahkan tombol ke dokumen
+                        $('#buttonContainer').append(link);
+                        // $.ajax({
+                        //     type: 'POST',
+                        //     url: "{{ url('/addparticipants') }}" + '/' + idSchedule,
+                        //     data: {
+                        //         _token: '{{ csrf_token() }}'
+                        //     },
+                        // });
+                    });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: 'No data selected.',
+                });
+            };
         });
         $('#delete').on('click', function(){
             var selectData = dataTable.rows({ selected: true}).data();
@@ -562,10 +609,10 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     selectData.each(function (data) {
-                        const idUser = data.uid;
+                        const idSchedule = data.schedule_id;
                         $.ajax({
                             type: 'DELETE',
-                            url: "{{ url('/user') }}" + '/' + idUser,
+                            url: "{{ url('/scheduletraining') }}" + '/' + idSchedule,
                             data: {
                                 _token: '{{ csrf_token() }}'
                             },
@@ -601,49 +648,51 @@
         }
     });
   });
-        $("#nik").change(function(){
-            var nik = $("#nik").val();
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            // Menggunakan ajax untuk mengirim dan dan menerima data dari server
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "{{ route('DataApi') }}",
-                data: {
-                    _token: csrfToken,
-                    nik: nik,
-                },
-                success: function(data){
-                    var options = '';
-                    data.forEach(function (m) {
-                        options += "<option value='" + m.nama + "'>" + m.nama + "</option>";
+  $("#nik").change(function(){
+                    var nik = $("#nik").val();
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    // Menggunakan ajax untuk mengirim dan dan menerima data dari server
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "{{ route('DataApi') }}",
+                        data: {
+                            _token: csrfToken,
+                            nik: nik,
+                        },
+                        success: function(data){
+                            var options = '';
+                            data.forEach(function (m) {
+                                options += "<option value='" + m.nama + "'>" + m.nama + "</option>";
+                            });
+                            $("#nama").html(options);
+                        }
                     });
-                    $("#nama").html(options);
-                }
-            });
-        });
+                    $("#nik").trigger("change");
+                });
 
-        $("#nik").change(function(){
-            var sect = $("#nik").val();
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            // Menggunakan ajax untuk mengirim dan dan menerima data dari server
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "{{ route('DataApiSection') }}",
-                data: {
-                    _token: csrfToken,
-                    nik: sect,
-                },
-                success: function(data){
-                    var options = '';
-                    data.forEach(function (m) {
-                        options += "<option value='" + m.kode_section + "'>" + m.kode_section + "</option>";
+                $("#nik").change(function(){
+                    var sect = $("#nik").val();
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    // Menggunakan ajax untuk mengirim dan dan menerima data dari server
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "{{ route('DataApiSection') }}",
+                        data: {
+                            _token: csrfToken,
+                            nik: sect,
+                        },
+                        success: function(data){
+                            var options = '';
+                            data.forEach(function (m) {
+                                options += "<option value='" + m.kode_section + "'>" + m.kode_section + "</option>";
+                            });
+                            $("#section").html(options);
+                        }
                     });
-                    $("#section").html(options);
-                }
-            });
-        });
+                    $("#nik").trigger("change");
+                });
         document.getElementById('Btnsimpan').addEventListener('click', function(){
         Swal.fire({
             title: 'Are you sure?',

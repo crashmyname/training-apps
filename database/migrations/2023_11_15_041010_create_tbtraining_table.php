@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('nik');
             $table->string('name');
             $table->string('section');
-            $table->date('date_training');
             $table->string('matepl');
             $table->string('questfeedback');
             $table->string('evaluation');

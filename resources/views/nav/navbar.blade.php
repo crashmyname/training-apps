@@ -21,6 +21,9 @@
                 @case ('Data Training')
                     Data Training
                     @break
+                @case ('Form Add Participants')
+                    Form Add Participants
+                    @break
                 @default
                     Dashboard
                     @break
@@ -188,6 +191,7 @@
                             <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                                 <div class="avatar me-1">
                                     <img src="{{asset('storage/profil-user/DSC02573.jpg')}}" alt="" srcset="">
+                                    {{-- <span class="avatar-status bg-success"></span> --}}
                                 </div>
                                 <div class="d-none d-md-block d-lg-inline-block">Hi, Fadli</div>
                             </a>

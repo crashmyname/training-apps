@@ -32,6 +32,10 @@ Route::get('/datatraining',[TrainingController::class, 'dataTraining'])->name('d
 //Schedule
 Route::get('/scheduletraining',[TrainingController::class,'ScheduleTraining'])->name('schedule');
 Route::post('/scheduletraining',[TrainingController::class,'addSchtraining'])->name('add-schedule');
+Route::post('/scheduletraining/{id}',[TrainingController::class,'editSchtraining'])->name('edit-schedule');
+Route::delete('/scheduletraining/{id}',[TrainingController::class,'deleteSchtraining'])->name('delete-schedule');
+Route::get('/addparticipants/{id}',[TrainingController::class,'formSchtraining'])->name('form-participants');
+Route::post('/addparticipants/{id}',[TrainingController::class,'addParticipants'])->name('add-participants');
 //User
 Route::get('/user', [UserController::class, 'index'])->name('user');
 Route::post('/user', [UserController::class, 'addUser'])->name('add_user');

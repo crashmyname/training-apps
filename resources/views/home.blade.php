@@ -12,9 +12,9 @@
             <div class="card-body p-0">
                 <div class="d-flex flex-column">
                     <div class='px-3 py-3 d-flex justify-content-between'>
-                        <h3 class='card-title'>BALANCE</h3>
+                        <h3 class='card-title'>COUNT User</h3>
                         <div class="card-right d-flex align-items-center">
-                            <p>$50 </p>
+                            <p>{{$user->Count()}}</p>
                         </div>
                     </div>
                     <div class="chart-wrapper">
@@ -29,9 +29,9 @@
             <div class="card-body p-0">
                 <div class="d-flex flex-column">
                     <div class='px-3 py-3 d-flex justify-content-between'>
-                        <h3 class='card-title'>Revenue</h3>
+                        <h3 class='card-title'>COUNT Training</h3>
                         <div class="card-right d-flex align-items-center">
-                            <p>$532,2 </p>
+                            <p>{{$training->Count()}}</p>
                         </div>
                     </div>
                     <div class="chart-wrapper">
@@ -46,9 +46,9 @@
             <div class="card-body p-0">
                 <div class="d-flex flex-column">
                     <div class='px-3 py-3 d-flex justify-content-between'>
-                        <h3 class='card-title'>ORDERS</h3>
+                        <h3 class='card-title'>Count Schedule</h3>
                         <div class="card-right d-flex align-items-center">
-                            <p>1,544 </p>
+                            <p>{{$schedule->Count()}}</p>
                         </div>
                     </div>
                     <div class="chart-wrapper">
@@ -63,9 +63,9 @@
             <div class="card-body p-0">
                 <div class="d-flex flex-column">
                     <div class='px-3 py-3 d-flex justify-content-between'>
-                        <h3 class='card-title'>Sales Today</h3>
+                        <h3 class='card-title'>Count Data Train</h3>
                         <div class="card-right d-flex align-items-center">
-                            <p>423 </p>
+                            <p>{{$datatrain->Count()}}</p>
                         </div>
                     </div>
                     <div class="chart-wrapper">

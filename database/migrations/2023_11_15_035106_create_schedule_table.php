@@ -22,14 +22,14 @@ return new class extends Migration
             $table->date('replan1')->nullable();
             $table->date('replan2')->nullable();
             $table->date('replan3')->nullable();
-            $table->date('actual');
+            $table->date('actual')->nullable();
             $table->integer('participants');
             $table->string('pic');
             $table->date('duedate');
             $table->string('statusmonitor');
             $table->string('desc');
-            $table->string('created_by');
-            $table->string('modify_by');
+            $table->string('created_by')->nullable();
+            $table->string('modify_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

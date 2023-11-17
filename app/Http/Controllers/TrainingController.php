@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Training;
 use App\Models\SchTraining;
+use App\Models\DataTrain;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -95,12 +96,14 @@ class TrainingController extends Controller
         $resultDept = $dept->json();
         $picApi = Http::get('http://10.203.68.47:90/fambook/config/api.php');
         $pic = $picApi->json();
+        $dataApi = Http::get('http://10.203.68.47:90/fambook/config/api.php');
+        $result = $dataApi->json();
         if($request->ajax()){
             $sch = SchTraining::all();
             return DataTables::of($sch)
             ->make(true);
         }
-        return view('training.sch_training',compact('title','training','resultDept','pic'));
+        return view('training.sch_training',compact('title','training','resultDept','result','pic'));
     }
 
     public function addSchtraining(Request $request)
@@ -124,13 +127,62 @@ class TrainingController extends Controller
         return redirect()->route('schedule')->with('notification',$notification);
     }
 
-    public function editSchtraining()
+    public function editSchtraining(Request $request, $id)
     {
-
+        $sch = SchTraining::find($id);
+        $sch->name_training = $request->name_training;
+        $sch->name_trainer = $request->name_trainer;
+        $sch->section = $request->section;
+        $sch->plan = $request->plan;
+        $sch->replan1 = $request->replan1;
+        $sch->replan2 = $request->replan2;
+        $sch->replan3 = $request->replan3;
+        $sch->actual = $request->actual;
+        $sch->participants = $request->participants;
+        $sch->pic = $request->pic;
+        $sch->duedate = $request->duedate;
+        $sch->statusmonitor = $request->statusmonitor;
+        $sch->desc = $request->desc;
+        $sch->save();
+        $notification = [
+            'title' => 'Success!',
+            'text' => 'Update data successfully!!!',
+            'icon' => 'success',
+        ];
+        return redirect()->route('schedule')->with('notification',$notification);
     }
 
-    public function deleteSchtraining()
+    public function deleteSchtraining($id)
     {
-        
+        $schedule = SchTraining::find($id);
+        $schedule->delete();
+        return response()->json(['message' => 'Data deleted successfully']);
+    }
+
+    public function formSchtraining($id)
+    {
+        $schedule = SchTraining::find($id);
+        $title = "Form Add Participants";
+        $dataApi = Http::get('http://10.203.68.47:90/fambook/config/api.php');
+        $result = $dataApi->json();
+        return view('training.add_participants',compact('schedule','title','result'));
+    }
+
+    public function addParticipants(Request $request, $id)
+    {
+        DataTrain::create([
+            'schedule_id' => $id,
+            'nik' => $request->nik,
+            'name' => $request->name,
+            'section' => $request->section,
+            'matepl' => 'OK',
+            'questfeedback' => 'OK'
+        ]);
+        $notification = [
+            'title' => 'Success!',
+            'text' => $request->name.' Added Successfully',
+            'icon' => 'success',
+        ];
+        return redirect()->route('form-participants',$id)->with('notification',$notification);
     }
 }
