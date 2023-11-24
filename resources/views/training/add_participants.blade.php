@@ -23,7 +23,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">FORM INPUT PEMAKAIAN</h4>
+            <h4 class="card-title">FORM INPUT PESERTA</h4>
           </div>
           <div class="card-content">
             <div class="card-body">
@@ -39,7 +39,7 @@
             });
             </script>
             @endif
-            <form action="{{route('add-participants',$schedule->schedule_id)}}" class="form form-horizontal" method="post" enctype="multipart/form-data">
+            <form action="{{route('add-participants',$schedule->schedule_id)}}" class="form form-horizontal" method="post" enctype="multipart/form-data" id="dataFormParticipants">
                 @csrf
                 <div class="row">
                   <div class="col-md-6 col-12">
@@ -67,10 +67,9 @@
                   </div>
                 </div>
                   <div class="col-12 d-flex justify-content-end">
-                  <button type="submit"
+                  <button type="button"
                     class="btn btn-primary me-1 mb-1"
-                    name="simpan"
-                    onclick="return confirm('Apakah data yang anda masukkan sudah benar?')">Submit</button>
+                    name="simpan" id="simpan">Submit</button>
                     <button
                       type="reset"
                       class="btn btn-light-secondary me-1 mb-1"
@@ -87,6 +86,19 @@
     </div>
 </section>
 <script>
+  document.getElementById('simpan').addEventListener('click',function(){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Is the data you entered correct?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+    }).then((result)=>{
+      if(result.isConfirmed){
+        document.getElementById('dataFormParticipants').submit();
+      }
+    });
+  });
     $("#nik").change(function(){
                     var nik = $("#nik").val();
                     var csrfToken = $('meta[name="csrf-token"]').attr('content');

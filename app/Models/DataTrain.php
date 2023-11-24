@@ -14,6 +14,6 @@ class DataTrain extends Model
 
     public function schtraining()
     {
-        return $this->hashMany(SchTraining::class,'schedule_id','schedule_id');
+        return $this->hasMany(SchTraining::class,'schedule_id','schedule_id');
     }
 }

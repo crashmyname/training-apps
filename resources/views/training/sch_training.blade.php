@@ -11,7 +11,7 @@
               <nav aria-label="breadcrumb" class='breadcrumb-header'>
                   <ol class="breadcrumb">
                       <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Training</li>
+                      <li class="breadcrumb-item active" aria-current="page">Schedule Training</li>
                   </ol>
               </nav>
           </div>
@@ -20,10 +20,6 @@
   <section class="section">
     <div class="card">
         <div class="card-header">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-            data-bs-target="#success"><i class="bi bi-plus-square"></i> Add Data</button>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-            data-bs-target="#success1"><i class="bi bi-plus-square"></i> Add Data Manual</button> <br><hr>
             @if(session()->has('berhasil'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{session('berhasil')}}
@@ -31,16 +27,16 @@
             </div>
             @endif
             @if (count($errors) > 0)
-                        <div class = "alert alert-danger">
+            <div class = "alert alert-danger">
                             <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
-                            @endforeach
+                                @endforeach
                             </ul>
                         </div>
-                    @endif
-            @if(session('notification'))
-            <script>
+                        @endif
+                        @if(session('notification'))
+                        <script>
                 document.addEventListener('DOMContentLoaded', function () {
                 Swal.fire({
                     title: '{{ session('notification.title') }}',
@@ -51,6 +47,11 @@
             });
             </script>
             @endif
+            @if (!auth()->check() || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Group Leader')
+            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+            data-bs-target="#success"><i class="bi bi-plus-square"></i> Add Data</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+            data-bs-target="#success1"><i class="bi bi-plus-square"></i> Add Data Manual</button> <br><hr>
             <!--Success theme Modal -->
             <div class="modal fade text-left" id="success" tabindex="-1" role="dialog"
                 aria-labelledby="myModalLabel110" aria-hidden="true">
@@ -68,7 +69,7 @@
                                 <h4 class="card-title">Form Input</h4>
                             </div>
                             <form class="form form-horizontal" method="post"
-                                enctype="multipart/form-data" action="{{route('add-schedule')}}">
+                                enctype="multipart/form-data" action="{{route('add-schedule')}}" id="formAddSchedule">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
@@ -80,7 +81,7 @@
                                                 class="choices from-select" required>
                                                 <option value="">-- Pilih --</option>
                                                 @foreach ($training as $data)
-                                                <option value="{{$data->kode_training}}">{{$data->name_training}}</option>
+                                                <option value="{{$data->name_training}}">{{$data->name_training}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -149,9 +150,11 @@
                                             <label>Status Monitoring</label>
                                         </div>
                                         <div class="col-md-8 form-group">
-                                            <input type="date" id="first-name"
-                                                class="form-control" name="statusmonitor"
-                                                >
+                                            <select name="statusmonitor" class="form form-control">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="Open">Open</option>
+                                                <option value="Close">Close</option>
+                                            </select>
                                         </div>                  
                                         <div class="col-md-4">
                                             <label>Description</label>
@@ -198,7 +201,7 @@
                                 <h4 class="card-title">Form Input</h4>
                             </div>
                             <form class="form form-horizontal" method="post"
-                                enctype="multipart/form-data" action="{{route('add-schedule')}}">
+                                enctype="multipart/form-data" action="{{route('add-schedule')}}" id="formAddSchedule">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
@@ -210,7 +213,7 @@
                                                 class="choices from-select" required>
                                                 <option value="">-- Pilih --</option>
                                                 @foreach ($training as $data)
-                                                <option value="{{$data->kode_training}}">{{$data->name_training}}</option>
+                                                <option value="{{$data->name_training}}">{{$data->name_training}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -275,9 +278,11 @@
                                             <label>Status Monitoring</label>
                                         </div>
                                         <div class="col-md-8 form-group">
-                                            <input type="date" id="first-name"
-                                                class="form-control" name="statusmonitor"
-                                                >
+                                            <select name="statusmonitor" class="form form-control">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="Open">Open</option>
+                                                <option value="Close">Close</option>
+                                            </select>
                                         </div>                  
                                         <div class="col-md-4">
                                             <label>Description</label>
@@ -348,7 +353,10 @@
                 </div>
             </div>  
             <button type="submit" id="delete" title="delete user" class="btn icon btn-danger"><i class="bi bi-trash"></i></button> |
-            <a id="addParticipants" type="button" title="Add Participants" class="btn btn-info"><i class="bi bi-person-add"></i></a>
+            <a id="addParticipants" type="button" title="Add Participants" target="_blank" class="btn btn-info"><i class="bi bi-person-add"></i></a>
+            <a id="viewParticipants" type="button" title="View Participants" target="_blank" class="btn btn-secondary"><i class="bi bi-people-fill"></i></a>
+            @else
+            @endif
         </div>        
         <div class="card-body">
             <table class='table table-striped' id="table1">
@@ -525,6 +533,8 @@
 
         if (selectedData.length > 0) {
             selectedData.each(function (data) {
+                var isDisable = data.statusmonitor === "Close";
+                $('#editModalButton').prop('disabled', isDisable);
                 const createdAt = new Date(data.created_at); // Mengonversi string ke objek Date
                 const formattedCreatedAt = createdAt.toLocaleString('en-US', {
                     timeZone: 'Asia/Jakarta',
@@ -536,10 +546,9 @@
                     second: '2-digit',
                 });
                 var editData = "{{ url('/scheduletraining') }}";
-                // var foto = "{{asset('storage/profil-user/')}}";
                 var csrf = '@csrf';
                 var iD = data.schedule_id;
-                var info = '<form class="form form-control" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post">' + csrf +
+                var info = '<form class="form form-control" id="formEditSchedule" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post">' + csrf +
                     '<table>' + 
                         '<tr>' + '<td width="15%">' + 'Name Training' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="name_training" class="form-control" value="' + data.name_training + '">' + '</td>' + '</tr>' + 
                         '<tr>' + '<td>' + 'Name Trainer' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name_trainer" class="form-control" value="' + data.name_trainer + '">' + '</tr>' + 
@@ -552,7 +561,7 @@
                         '<tr>' + '<td>' + 'Number of participants' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="participants" class="form-control" value="' + data.participants + '">' + '</tr>'+ 
                         '<tr>' + '<td>' + 'Pic' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="pic" class="form-control" value="' + data.pic + '">' + '</tr>'+ 
                         '<tr>' + '<td>' + 'Due Date' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="duedate" class="form-control" value="' + data.duedate + '">' + '</tr>'+ 
-                        '<tr>' + '<td>' + 'Status Monitoring' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="statusmonitor" class="form-control" value="' + data.statusmonitor + '">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Status Monitoring' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<select name="statusmonitor" class="form form-control"><option value="'+data.statusmonitor+'" selected></option><option value="Open">Open</option><option value="Close">Close</option></select>' + '</tr>'+ 
                         '<tr>' + '<td>' + 'Desc' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="desc" class="form-control" value="' + data.desc + '">' + '</tr>'+ 
                         '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
                 console.log(data.schedule_id);
@@ -570,22 +579,49 @@
             if (selectData.length > 0) {
                     selectData.each(function (data) {
                         const idSchedule = data.schedule_id;
-                        window.location.href="{{url('/addparticipants')}}"+"/"+idSchedule;
+                        const Namatraining = data.name_training;
+                        const dAtE = data.plan;
+                        var url = "{{url('/participants')}}"+"/"+idSchedule;
+                        var cardTitle = "FORM INPUT PEMAKAIAN " + Namatraining + " - DATE: " + dAtE;
+                        var Tanggal = "DATE :" + data.plan;
+                        $('#judultraining').text(cardTitle);
+                        // window.location.href="{{url('/participants')}}"+"/"+idSchedule;
+                        window.open(url, '_blank');
                         var link = $('<a>', {
                             href: url,
                             text: 'Go to Add Participants',
                             class: 'btn btn-primary',
+                            target: '_blank',
                         });
 
                         // Tambahkan tombol ke dokumen
                         $('#buttonContainer').append(link);
-                        // $.ajax({
-                        //     type: 'POST',
-                        //     url: "{{ url('/addparticipants') }}" + '/' + idSchedule,
-                        //     data: {
-                        //         _token: '{{ csrf_token() }}'
-                        //     },
-                        // });
+                    });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: 'No data selected.',
+                });
+            };
+        });
+        $('#viewParticipants').on('click', function(){
+            var selectData = dataTable.rows({ selected: true}).data();
+            if (selectData.length > 0) {
+                    selectData.each(function (data) {
+                        const idSchedule = data.schedule_id;
+                        var url = "{{url('/viewparticipants')}}"+"/"+idSchedule;
+                        window.open(url, '_blank');
+                        // window.location.href="{{url('/viewparticipants')}}"+"/"+idSchedule;
+                        var link = $('<a>', {
+                            href: url,
+                            text: 'Go to Add Participants',
+                            class: 'btn btn-primary',
+                            target: '_blank',
+                        });
+
+                        // Tambahkan tombol ke dokumen
+                        $('#buttonContainer').append(link);
                     });
             } else {
                 Swal.fire({
@@ -701,10 +737,10 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
+            confirmButtonText: 'Yes',
         }).then((result)=>{
             if(result.isConfirmed){
-                document.querySelector('form').submit();
+                document.getElementById('formAddSchedule').submit();
             }
         });
     });
@@ -716,10 +752,10 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
+            confirmButtonText: 'Yes',
         }).then((result)=>{
             if(result.isConfirmed){
-                document.querySelector('form').submit();
+                document.getElementById('formEditSchedule').submit();
             }
         });
     });

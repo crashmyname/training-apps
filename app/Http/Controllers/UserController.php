@@ -22,8 +22,7 @@ class UserController extends Controller
     {
         $title = "Master User";
         if($request->ajax()){
-            $user = User::join('role','id_role','=','role')
-            ->select('uid','nik','name','email','section','role','name_role','foto','users.created_at','users.updated_at')
+            $user = User::select('uid','nik','name','email','section','role','foto','created_at','updated_at')
             ->get();
             return DataTables::of($user)
             ->make(true);
@@ -102,5 +101,37 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
         return response()->json(['message'=>'Data deleted successfully']);
+    }
+
+    public function showLogin()
+    {
+        return view('auth.login');
+    }
+
+    public function onLogin(Request $request)
+    {
+        $validasi = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        if(Auth::attempt($validasi)){
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard');
+        }else{
+            $alert = [
+                'title' => 'Error',
+                'text' => 'The email or password you entered is incorrect!!',
+                'icon' => 'error',
+            ];
+            return back()->with('alert',$alert);
+        }
+    }
+
+    public function logOut(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

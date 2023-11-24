@@ -57,22 +57,23 @@
                 @if($title == "Dashboard")
                 <li class="sidebar-item active ">
                     <a href="{{route('dashboard')}}" class='sidebar-link'>
-                        <i data-feather="home" width="20"></i> 
+                        <i class="bi bi-house-heart-fill"></i> 
                         <span>Dashboard</span>
                     </a>   
                 </li>
                 @else
                 <li class="sidebar-item">
                     <a href="{{route('dashboard')}}" class='sidebar-link'>
-                        <i data-feather="home" width="20"></i> 
+                        <i class="bi bi-house-heart-fill"></i> 
                         <span>Dashboard</span>
                     </a>   
                 </li>
                 @endif
+                @if (!auth()->check() || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Group Leader')
                 @if($title == "Master Training" || $title == "Master User" || $title == "Master Score")
                 <li class="sidebar-item  has-sub active">
                     <a href="#" class='sidebar-link'>
-                        <i data-feather="triangle" width="20"></i> 
+                        <i class="bi bi-house-gear-fill"></i> 
                         <span>Master Data</span>
                     </a>
                     <ul class="submenu active">                        
@@ -90,7 +91,7 @@
                 @else
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i data-feather="triangle" width="20"></i> 
+                        <i class="bi bi-house-gear-fill"></i> 
                         <span>Master Data</span>
                     </a>
                     <ul class="submenu">                        
@@ -105,18 +106,21 @@
                         </li>                                             
                     </ul>                 
                 </li>
+                @endif                    
+                @else
+                    
                 @endif
                 @if($title == "Data Training")
                 <li class="sidebar-item active ">
                     <a href="{{route('data-training')}}" class='sidebar-link'>
-                        <i data-feather="layout" width="20"></i> 
+                        <i class="bi bi-journal-bookmark-fill" width="20"></i> 
                         <span>Training</span>
                     </a>                    
                 </li>
                 @else
                 <li class="sidebar-item  ">
                     <a href="{{route('data-training')}}" class='sidebar-link'>
-                        <i data-feather="layout" width="20"></i> 
+                        <i class="bi bi-journal-bookmark-fill" width="20"></i> 
                         <span>Training</span>
                     </a>                    
                 </li>
@@ -124,15 +128,30 @@
                 @if($title == "Schedule Training")
                 <li class="sidebar-item active ">
                     <a href="{{route('schedule')}}" class='sidebar-link'>
-                        <i data-feather="layout" width="20"></i> 
+                        <i class="bi bi-journal-richtext"></i> 
                         <span>Schedule Training</span>
                     </a>                    
                 </li>
                 @else
                 <li class="sidebar-item  ">
                     <a href="{{route('schedule')}}" class='sidebar-link'>
-                        <i data-feather="layout" width="20"></i> 
+                        <i class="bi bi-journal-richtext"></i> 
                         <span>Schedule Training</span>
+                    </a>                    
+                </li>
+                @endif
+                @if($title == "Training Assessment")
+                <li class="sidebar-item active ">
+                    <a href="{{route('nilai-training')}}" class='sidebar-link'>
+                        <i class="bi bi-journal-richtext"></i> 
+                        <span>Training Assessment</span>
+                    </a>                    
+                </li>
+                @else
+                <li class="sidebar-item  ">
+                    <a href="{{route('nilai-training')}}" class='sidebar-link'>
+                        <i class="bi bi-journal-richtext"></i> 
+                        <span>Training Assessment</span>
                     </a>                    
                 </li>
                 @endif
@@ -161,46 +180,35 @@
                                 <ul class="list-group rounded-none">
                                     <li class="list-group-item border-0 align-items-start">
                                         <div class="avatar bg-success me-3">
-                                            <span class="avatar-content"><i data-feather="shopping-cart"></i></span>
+                                            <span class="avatar-content"><i class="bi bi-envelope-exclamation mb-2"></i></span>
                                         </div>
                                         <div>
-                                            <h6 class='text-bold'>New Order</h6>
+                                            <h6 class='text-bold'>No Notifications</h6>
                                             <p class='text-xs'>
-                                                An order made by Ahmad Saugi for product Samsung Galaxy S69
+                                                
                                             </p>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <li class="dropdown nav-icon me-2">
-                            <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                                <div class="d-lg-inline-block">
-                                    <i data-feather="mail"></i>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end" >
-                                <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
-                                <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i data-feather="log-out"></i> Logout</a>
-                            </div>
-                        </li>
                         <li class="dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                                 <div class="avatar me-1">
-                                    <img src="{{asset('storage/profil-user/DSC02573.jpg')}}" alt="" srcset="">
-                                    {{-- <span class="avatar-status bg-success"></span> --}}
+                                    <img src="{{asset('storage/profil-user/'.auth()->user()->foto)}}" alt="" srcset="">
+                                    <span class="avatar-status bg-success"></span>
                                 </div>
-                                <div class="d-none d-md-block d-lg-inline-block">Hi, Fadli</div>
+                                <div class="d-none d-md-block d-lg-inline-block">Hi, {{auth()->user()->name}}</div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
+                                {{-- <a class="dropdown-item" href="#"><i data-feather="mail"></i> Messages</a> --}}
                                 <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i data-feather="log-out"></i> Logout</a>
+                                <a class="dropdown-item active" href="#" id="buttonLogout"><i data-feather="log-out"></i> Logout</a>
+                                <form id="logoutForm" action="{{route('logout')}}" method="post">
+                                    @csrf
+                                </form>
                             </div>
                         </li>
                     </ul>
@@ -214,7 +222,7 @@
                     <p>2023 &copy; Training Apps</p>
                 </div>
                 <div class="float-end">
-                    <p>Crafted with <span class='text-danger'><i data-feather="heart"></i></span> by <a href="https://fadliazkap.nasihosting.com">Fadli</a></p>
+                    <p>Crafted with <span class='text-danger'><i data-feather="heart"></i></span> by <a target="_blank" href="https://www.instagram.com/fadliazkaprayogi">Fadli</a></p>
                 </div>
             </div>
         </footer>
@@ -248,5 +256,21 @@
 <script src="{{asset('/datatable/responsive.bootstrap5.min.js')}}"></script>
 <script src="{{asset('/datatable/dataTables.select.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script type="text/javascript">
+    document.getElementById('buttonLogout').addEventListener('click', function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Logout',
+            text: 'Are you sure want Logout?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Logout!',
+        }).then((result)=>{
+            if(result.isConfirmed){
+                document.forms['logoutForm'].submit();
+            }
+        })
+    })
+</script>
 </body>
 </html>

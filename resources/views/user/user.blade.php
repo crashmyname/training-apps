@@ -70,7 +70,7 @@
                                 <div class="card-content">
                                     <div class="card-body">
                                         <form class="form form-horizontal" method="post"
-                                            enctype="multipart/form-data" action="{{route('add_user')}}">
+                                            enctype="multipart/form-data" action="{{route('add_user')}}" id="addUser">
                                             @csrf
                                             <div class="form-body">
                                                 <div class="row">
@@ -122,7 +122,7 @@
                                                             class="form-control" required>
                                                             <option value="">-- Pilih --</option>
                                                             @foreach ($role as $dataRole)
-                                                            <option value="{{$dataRole->id_role}}">{{$dataRole->name_role}}</option>
+                                                            <option value="{{$dataRole->name_role}}">{{$dataRole->name_role}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -244,7 +244,7 @@
               {data: 'name', name: 'name'},
               {data: 'email', name: 'email'},
               {data: 'section', name: 'section'},
-              {data: 'name_role', name: 'name_role'},
+              {data: 'role', name: 'role'},
               {
                     data: 'foto',
                     name: 'foto',
@@ -393,7 +393,7 @@
                 var foto = "{{asset('storage/profil-user/')}}";
                 var csrf = '@csrf';
                 var iD = data.uid;
-                var info = '<form class="form form-control" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post">' + csrf +'<table>' + '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '" readonly>' + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '" readonly>' + '<tr>' + '<td>' + 'Email' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="email" name="email" class="form-control" value="' + data.email + '">' + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '">' + '</tr>' + '<tr>' + '<td>' + 'Password' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="password" name="password" class="form-control" value="" >' + '</tr>' + '<tr>' + '<td>' + 'Role' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<select type="text" name="role" id="role" class="form-control" required><option value="' + data.role + '">'+data.name_role+'</option>@foreach ($role as $dataRole) <option value="{{$dataRole->id_role}}">{{$dataRole->name_role}}</option>@endforeach </select>' + '</tr>' + '<tr>' + '<td>' + 'Picture' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="file" name="foto" class="form-control" value="' + data.foto + '" >' + '</tr>' + '<tr>' + '<td>' + '' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<img src="'+foto+'/'+data.foto+'" width="50%" class="rounded">' + '</tr>' + '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
+                var info = '<form class="form form-control" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post" id="editUser">' + csrf +'<table>' + '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '" readonly>' + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '" readonly>' + '<tr>' + '<td>' + 'Email' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="email" name="email" class="form-control" value="' + data.email + '">' + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '">' + '</tr>' + '<tr>' + '<td>' + 'Password' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="password" name="password" class="form-control" value="" >' + '</tr>' + '<tr>' + '<td>' + 'Role' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<select type="text" name="role" id="role" class="form-control" required><option value="' + data.role + '">'+data.role+'</option>@foreach ($role as $dataRole) <option value="{{$dataRole->id_role}}">{{$dataRole->name_role}}</option>@endforeach </select>' + '</tr>' + '<tr>' + '<td>' + 'Picture' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="file" name="foto" class="form-control" value="' + data.foto + '" >' + '</tr>' + '<tr>' + '<td>' + '' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<img src="'+foto+'/'+data.foto+'" width="50%" class="rounded">' + '</tr>' + '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
                 console.log(data.uid);
                 modalContent.html(info);
             });
@@ -511,7 +511,7 @@
             confirmButtonText: 'Yes'
         }).then((result)=>{
             if(result.isConfirmed){
-                document.querySelector('form').submit();
+                document.getElementById('addUser').submit();
             }
         });
     });
@@ -526,7 +526,7 @@
             confirmButtonText: 'Yes'
         }).then((result)=>{
             if(result.isConfirmed){
-                document.querySelector('form').submit();
+                document.getElementById('editUser').submit();
             }
         });
     });

@@ -70,7 +70,7 @@
                                 <div class="card-content">
                                     <div class="card-body">
                                         <form class="form form-horizontal" method="post"
-                                            enctype="multipart/form-data" action="{{route('add_training')}}">
+                                            enctype="multipart/form-data" action="{{route('add_training')}}" id="simpanTraining">
                                             @csrf
                                             <div class="form-body">
                                                 <div class="row">
@@ -404,7 +404,7 @@
         confirmButtonText: 'Yes'
     }).then((result)=>{
         if(result.isConfirmed){
-            document.querySelector('form').submit();
+            document.getElementById('simpanTraining').submit();
         }
     });
   });
