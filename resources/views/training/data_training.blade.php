@@ -203,30 +203,44 @@
 </section>
 <script type="text/javascript">
   $(document).ready(function () {
-      dataTable = $('#table1').DataTable({
+      var dataTable = $('#table1').DataTable({
           processing: true,
           serverside: true,
           responsive: true,
           select: true,
+          autoWidth: true,
           ajax: '{{route('data-training')}}',
           columns:[
               {
-                  data: 'datatrain.train_id',
-                  name: 'datatrain.train_id',
+                  data: 'train_id',
+                  name: 'train_id',
                   render:function(data, type, row, meta){
                       return meta.row + meta.settings._iDisplayStart + 1;
                   },
               },
-              {data: 'datatrain.nik', name: 'datatrain.nik'},
-              {data: 'datatrain.name', name: 'datatrain.name'},
-              {data: 'datatrain.section', name: 'datatrain.section'},
+              {data: 'nik', name: 'nik'},
+              {data: 'name', name: 'name'},
+              {data: 'section', name: 'section'},
               {data: 'name_training', name: 'name_training'},
               {data: 'name_trainer', name: 'name_trainer'},
-              {data: 'actual', name: 'actual'},
-              {data: 'datatrain.matepl', name: 'datatrain.matepl'},
-              {data: 'datatrain.questfeedback', name: 'datatrain.questfeedback'},
-              {data: 'datatrain.evaluation', name: 'datatrain.evaluation'},
-              {data: 'datatrain.history_gol', name: 'datatrain.history_gol'},
+              {data: 'actual', name: 'actual', width:'25%',render: function(data, type, row){
+                // return moment(data).format('ll');
+                var date = new Date(data);
+                var day = date.getDate();
+                var monthName = [
+                    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'
+                ];
+                var month = monthName[date.getMonth()];
+                var year = date.getFullYear();
+                var format = day + '-' + month + '-' + year;
+                return format;
+              }},
+              {data: 'matepl', name: 'matepl'},
+              {data: 'questfeedback', name: 'questfeedback'},
+              {data: 'evaluation', name: 'evaluation'},
+              {data: 'history_gol', name: 'history_gol'},
+            //   {data: 'scorea', name: 'scorea'},
+            //   {data: 'scoreb', name: 'scoreb'},
           ],
           lengthMenu: [10, 25, 50, 100],
           dom: 'Blfrtip',
@@ -299,6 +313,10 @@
               }
           ]
       });
+      function reloadData(){
+        dataTable.ajax.reload(null, false);
+      }
+      setInterval(reloadData,300000);
       $('#showModalButton').on('click', function () {
         var selectedData = dataTable.rows({ selected: true }).data();
         var modalContent = $('#selectedKaryawanInfo');
@@ -483,20 +501,20 @@
             }
         });
     });
-        document.getElementById('BtnUpdate').addEventListener('click', function(){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Is the data you entered correct?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result)=>{
-            if(result.isConfirmed){
-                document.querySelector('form').submit();
-            }
-        });
-    });
+    //     document.getElementById('BtnUpdate').addEventListener('click', function(){
+    //     Swal.fire({
+    //         title: 'Are you sure?',
+    //         text: 'Is the data you entered correct?',
+    //         icon: 'question',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes'
+    //     }).then((result)=>{
+    //         if(result.isConfirmed){
+    //             document.querySelector('form').submit();
+    //         }
+    //     });
+    // });
 </script>
 @endsection

@@ -25,9 +25,9 @@
     <div class="card">
         <div class="card-header">
             {{-- <button type="button" class="btn btn-success" data-bs-toggle="modal"
-            data-bs-target="#success"><i class="bi bi-plus-square"></i> Add Data</button>
+            data-bs-target="#success"><i class="bi bi-plus-square"></i> Score A</button>
             <button type="button" class="btn btn-success" data-bs-toggle="modal"
-            data-bs-target="#success1"><i class="bi bi-plus-square"></i> Add Data Manual</button> <br><hr> --}}
+            data-bs-target="#success1"><i class="bi bi-plus-square"></i> Score B</button> <br><hr> --}}
             @if(session()->has('berhasil'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{session('berhasil')}}
@@ -71,7 +71,101 @@
                             <div class="card-header">
                                 <h4 class="card-title">Form Input</h4>
                             </div>
-                            
+                            <form class="form form-horizontal" method="post"
+                                enctype="multipart/form-data" action="{{route('add-schedule')}}" id="formAddSchedule">
+                                @csrf
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Name Training</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <select type="text" name="name_training" id="name_training"
+                                                class="choices from-select" required>
+                                                <option value="">-- Pilih --</option>
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Name Trainer</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <input type="text" id="first-name"
+                                                class="form-control" name="name_trainer"
+                                                placeholder="Enter name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Section</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <select class="choices form-select" name="section">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="ALL">ALL</option>
+                                                <option value=""></option>
+                                                <option value="OTHERS">OTHERS</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Plan</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <input type="date" id="first-name"
+                                                class="form-control" name="plan"
+                                                >
+                                        </div>                  
+                                        <div class="col-md-4">
+                                            <label>Number of Participants</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <input type="number" id="first-name"
+                                                class="form-control" name="participants"
+                                                >
+                                        </div>                  
+                                        <div class="col-md-4">
+                                            <label>Pic</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <select type="text" name="pic" id="pic"
+                                                class="choices from-select" required>
+                                                <option value="">-- Pilih --</option>
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Due Date Monitoring</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <input type="date" id="first-name"
+                                                class="form-control" name="duedate"
+                                                >
+                                        </div>                  
+                                        <div class="col-md-4">
+                                            <label>Status Monitoring</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <select name="statusmonitor" class="form form-control">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="Open">Open</option>
+                                                <option value="Close">Close</option>
+                                            </select>
+                                        </div>                  
+                                        <div class="col-md-4">
+                                            <label>Description</label>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <textarea name="desc" class="form-control" cols="30" rows="10"></textarea>
+                                        </div>                  
+                                        <div class="col-sm-12 d-flex justify-content-end">
+                                            <button type="button"
+                                                class="btn btn-primary me-1 mb-1"
+                                                name="simpan"
+                                                id="Btnsimpan">Submit</button>
+                                            <button type="reset"
+                                                class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -110,12 +204,12 @@
                 </div>
                 </div>
             </div>
-            Action : <button type="submit" title="info" class="btn icon btn-primary" id="showModalButton"><i class="bi bi-info-circle"></i></button> |
+            Action : <button type="submit" title="Add Score A" class="btn icon btn-primary" id="showModalButton"><i class="bi bi-plus-circle"></i> Score A</button> 
             <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Information Training</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Form Input Score A</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -130,7 +224,7 @@
                     </div>
                 </div>
             </div>           
-            <button type="submit" id="editModalButton" title="edit user" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></button> | 
+            <button type="submit" id="editModalButton" title="Add Score B" class="btn icon btn-success"><i class="bi bi-plus-circle-dotted"></i> Score B</button>  
             <div class="modal fade" id="scheduleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -149,8 +243,9 @@
                         </div>
                     </div>
                 </div>
-            </div>  
-            <button type="submit" id="delete" title="delete user" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
+            </div>    
+            <button type="submit" id="finalScore" title="Final Score" class="btn icon btn-info"><i class="bi bi-award-fill"></i> Final Score</button>
+            <button type="submit" id="pdfscore" title="Pdf Score" class="btn icon btn-danger"><i class="bi bi-filetype-pdf"></i> Pdf Score</button>
         </div>        
         <div class="card-body">
             <table class='table table-striped' id="table1">
@@ -159,43 +254,12 @@
                         <th>No</th>
                         <th>NIK</th>
                         <th>Name</th>
-                        <th>Divisi</th>
-                        <th>Dept</th>
                         <th>Section</th>
-                        <th>Position</th>
-                        <th>Status Employee</th>
-                        <th>Level</th>
-                        <th>Group</th>
-                        <th>Team</th>
-                        <th>Birth Place</th>
-                        <th>Birth Date</th>
-                        <th>Name Mother</th>
-                        <th>Hire Date</th>
-                        <th>Ktp Address</th>
-                        <th>Domicili</th>
-                        <th>Telp</th>
-                        <th>Phone 1</th>
-                        <th>Phone 2</th>
-                        <th>Private Email</th>
-                        <th>Work Email</th>
-                        <th>Work Email Pass</th>
-                        <th>Religion</th>
-                        <th>Last Education</th>
-                        <th>Major</th>
-                        <th>Blood Type</th>
-                        <th>Gender</th>
-                        <th>Marriage Status</th>
-                        <th>Number of Child</th>
-                        <th>Tax Status</th>
-                        <th>NPWP</th>
-                        <th>KTP</th>
-                        <th>KK</th>
-                        <th>BPJSTK</th>
-                        <th>BPJSKS</th>
-                        <th>Couple Work Stanley</th>
-                        <th>Transport</th>
-                        <th>Bank</th>
-                        <th>Rekening Number</th>
+                        <th>Name Training</th>
+                        <th>Name Trainer</th>
+                        <th>Date</th>
+                        <th>Status Score A</th>
+                        <th>Status Score B</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -205,44 +269,12 @@
                         <th>No</th>
                         <th>NIK</th>
                         <th>Name</th>
-                        <th>Divisi</th>
-                        <th>Dept</th>
                         <th>Section</th>
-                        <th>Position</th>
-                        <th>Status Employee</th>
-                        <th>Level</th>
-                        <th>Group</th>
-                        <th>Team</th>
-                        <th>Birth Place</th>
-                        <th>Birth Date</th>
-                        <th>Name Mother</th>
-                        <th>Hire Date</th>
-                        <th>Ktp Address</th>
-                        <th>Domicili</th>
-                        <th>Telp</th>
-                        <th>Phone 1</th>
-                        <th>Phone 2</th>
-                        <th>Private Email</th>
-                        <th>Work Email</th>
-                        <th>Work Email Pass</th>
-                        <th>Religion</th>
-                        <th>Last Education</th>
-                        <th>Major</th>
-                        <th>Blood Type</th>
-                        <th>Gender</th>
-                        <th>Marriage Status</th>
-                        <th>Number of Child</th>
-                        <th>Tax Status</th>
-                        <th>NPWP</th>
-                        <th>KTP</th>
-                        <th>KK</th>
-                        <th>BPJSTK</th>
-                        <th>BPJSKS</th>
-                        <th>Couple Work Stanley</th>
-                        <th>Transport</th>
-                        <th>Bank</th>
-                        <th>Rekening Number</th>
-                    </tr>
+                        <th>Name Training</th>
+                        <th>Name Trainer</th>
+                        <th>Date</th>
+                        <th>Status Score A</th>
+                        <th>Status Score B</th>
                 </tfoot>
             </table>
         </div>
@@ -259,51 +291,31 @@
           ajax: '{{route('nilai-training')}}',
           columns:[
               {
-                  data: 'noid',
-                  name: 'noid',
+                  data: 'train_id',
+                  name: 'train_id',
                   render:function(data, type, row, meta){
                       return meta.row + meta.settings._iDisplayStart + 1;
                   },
               },
               {data: 'nik', name: 'nik', className: 'filter-select'},
-              {data: 'nama', name: 'nama'},
-              {data: 'divisi', name: 'divisi'},
-              {data: 'dept', name: 'dept'},
-              {data: 'kode_section', name: 'kode_section'},
-              {data: 'posisi', name: 'posisi'},
-              {data: 'status_emp', name: 'status_emp'},
-              {data: 'level', name: 'level'},
-              {data: 'grup', name: 'grup'},
-              {data: 'teamm', name: 'teamm'},
-              {data: 'birth_place', name: 'birth_place'},
-              {data: 'birth_date', name: 'birth_date'},
-              {data: 'ibukandung', name: 'ibukandung'},
-              {data: 'hire_date', name: 'hire_date'},
-              {data: 'ktp_address', name: 'ktp_address'},
-              {data: 'domisili', name: 'domisili'},
-              {data: 'telp', name: 'telp'},
-              {data: 'phone1', name: 'phone1'},
-              {data: 'phone2', name: 'phone2'},
-              {data: 'priv_email', name: 'priv_email'},
-              {data: 'work_email', name: 'work_email'},
-              {data: 'work_email_pass', name: 'work_email_pass'},
-              {data: 'religion', name: 'religion'},
-              {data: 'last_education', name: 'last_education'},
-              {data: 'jurusan', name: 'jurusan'},
-              {data: 'blood_type', name: 'blood_type'},
-              {data: 'jenis_kelamin', name: 'jenis_kelamin'},
-              {data: 'marriage_status', name: 'marriage_status'},
-              {data: 'num_of_child', name: 'num_of_child'},
-              {data: 'tax_status', name: 'tax_status'},
-              {data: 'npwp', name: 'npwp'},
-              {data: 'ktp', name: 'ktp'},
-              {data: 'nokk', name: 'nokk'},
-              {data: 'bpjs_tk_number', name: 'bpjs_tk_number'},
-              {data: 'bpjs_ks_number', name: 'bpjs_ks_number'},
-              {data: 'couple_work_stanley', name: 'couple_work_stanley'},
-              {data: 'jemputan', name: 'jemputan'},
-              {data: 'bank', name: 'bank'},
-              {data: 'rekening_no', name: 'rekening_no'},
+              {data: 'name', name: 'name'},
+              {data: 'section', name: 'section'},
+              {data: 'name_training', name: 'name_training'},
+              {data: 'name_trainer', name: 'name_trainer'},
+              {data: 'actual', name: 'actual', width:'15%', render:function(data,type,row){
+                // return moment(data).format('ll');
+                var date = new Date(data);
+                var day = date.getDate();
+                var monthName = [
+                    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'
+                ];
+                var month = monthName[date.getMonth()];
+                var year = date.getFullYear();
+                var format = day + '-' + month + '-' + year;
+                return format;
+              }},
+              {data: 'scorea', name: 'scorea'},
+              {data: 'scoreb', name: 'scoreb'},
           ],
           initComplete: function () {
         this.api()
@@ -414,32 +426,70 @@
         modalContent.empty(); // Kosongkan konten modal sebelum menambahkan informasi baru
 
         if (selectedData.length > 0) {
-            var info = '<table>';
             selectedData.each(function (data) {
                 const createdAt = new Date(data.created_at); // Mengonversi string ke objek Date
-                const updatedAt = new Date(data.updated_at); // Mengonversi string ke objek Date
                 const formattedCreatedAt = createdAt.toLocaleString('en-US', {
-                timeZone: 'Asia/Jakarta',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
+                    timeZone: 'Asia/Jakarta',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
                 });
-                const formattedUpdatedAt = updatedAt.toLocaleString('en-US', {
-                timeZone: 'Asia/Jakarta',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
+                var ScoreA = '{{route('input-scoreA')}}';
+                var csrf = '@csrf';
+                var info = '<form class="form form-control" id="formScoreA" enctype="multipart/form-data" method="post">' + csrf +
+                    '<table>' + 
+                        '<tr>' + '<td width="50%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '" readonly><input type="hidden" name="train_id" class="form-control" value="' + data.train_id + '">' + '</td>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '"readonly>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '"readonly><input type="hidden" name="schedule_id" class="form-control" value="' + data.schedule_id + '">' + '</td>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Pemahaman terhadap isi dan tujuan materi' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="pemahaman" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Peningkatan Skill / Kompetensi' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="skill" class="form-control">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Peningkatan Kerja' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="kinerja" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Implementasi terhadap pekerjaan' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="implementasi" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Melakukan Perbaikan sistem / Improvement' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="improvement" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Mampu Mengajarkan kepada orang lain' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="mengajarkan" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Kesimpulan / Komentar Pimpinan Kerja' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<textarea name="kesimpulan" class="form-control"></textarea>' + '</tr>' + 
+                        '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-success" name="submitNilai" id="BtnScoreA">Submit</button>' + '</td>' + '</tr>' + '</table></form>';
+                console.log(data.schedule_id);
+                modalContent.html(info);
+                $('#BtnScoreA').on('click', function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        type: 'POST',
+                        url: ScoreA,
+                        data: $('#formScoreA').serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            // Tanggapan dari server setelah berhasil diupdate
+                            console.log(response);
+                            // Tambahkan logika atau tindakan lain setelah pembaruan
+                            if(response.status === 'success'){
+                                Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: 'Input Score Successfully',
+                                    });
+                                    reloadData();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'Failed to input Score',
+                                    });
+                                }
+                        },
+                        error: function (error) {
+                            console.error(error);
+                            // Tambahkan logika atau tindakan lain jika terjadi kesalahan
+                        }
+                    });
                 });
-                info += '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td class="form-control">' + data.nik + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.name + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.section + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Materials' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.matepl + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Question & Feedback' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.questfeedback + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Evaluation' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.evaluation + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'History Golongan' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.history_gol + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Created at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedCreatedAt + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Updated at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedUpdatedAt + '</td>' + '</tr>';
+                function reloadData(){
+                    dataTable.ajax.reload();
+                }
             });
-            info += '</table>';
-            modalContent.html(info);
         } else {
             // Jika tidak ada data yang dipilih, tampilkan pesan kosong
             modalContent.html('No data selected.');
@@ -465,22 +515,52 @@
                     minute: '2-digit',
                     second: '2-digit',
                 });
-                var editData = "{{ url('/viewparticipants') }}";
-                // var foto = "{{asset('storage/profil-user/')}}";
+                var ScoreA = '{{route('input-scoreB')}}';
                 var csrf = '@csrf';
-                var iD = data.train_id;
-                var info = '<form class="form form-control" id="formEditSchedule" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post">' + csrf +
+                var info = '<form class="form form-control" id="formScoreB" enctype="multipart/form-data" method="post">' + csrf +
                     '<table>' + 
-                        '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '">' + '</td>' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '">' + '</td>' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Materials' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="matepl" class="form-control" value="' + data.matepl + '">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Question & Feedback' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="questfeedback" class="form-control" value="' + data.questfeedback + '">' + '</tr>'+ 
-                        '<tr>' + '<td>' + 'Evaluation' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="evaluation" class="form-control" value="' + data.evaluation + '">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'History Golongan' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="history_gol" class="form-control" value="' + data.history_gol + '">' + '</tr>'+ 
-                        '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
+                        '<tr>' + '<td width="50%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '" readonly><input type="hidden" name="train_id" class="form-control" value="' + data.train_id + '">' + '</td>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '"readonly>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '"readonly><input type="hidden" name="schedule_id" class="form-control" value="' + data.schedule_id + '">' + '</td>' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Hasil test' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="tes" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-success" name="submitNilai" id="BtnScoreB">Submit</button>' + '</td>' + '</tr>' + '</table></form>';
                 console.log(data.schedule_id);
                 modalContent.html(info);
+                $('#BtnScoreB').on('click', function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        type: 'POST',
+                        url: ScoreA,
+                        data: $('#formScoreB').serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            // Tanggapan dari server setelah berhasil diupdate
+                            console.log(response);
+                            // Tambahkan logika atau tindakan lain setelah pembaruan
+                            if(response.status === 'success'){
+                                Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: 'Input Score Successfully',
+                                    });
+                                    reloadData();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'Failed to input Score',
+                                    });
+                                }
+                        },
+                        error: function (error) {
+                            console.error(error);
+                            // Tambahkan logika atau tindakan lain jika terjadi kesalahan
+                        }
+                    });
+                });
+                function reloadData(){
+                    dataTable.ajax.reload();
+                }
             });
         } else {
             // Jika tidak ada data yang dipilih, tampilkan pesan kosong
@@ -489,58 +569,58 @@
 
         $('#scheduleModal1').modal('show'); // Tampilkan modal
         });
-        $('#delete').on('click', function(){
+        $('#finalScore').on('click', function(){
             var selectData = dataTable.rows({ selected: true}).data();
             if (selectData.length > 0) {
-                Swal.fire({
-                title: 'Are you sure?',
-                text: 'You want to delete selected data?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
                     selectData.each(function (data) {
-                        const idParticipants = data.train_id;
-                        $.ajax({
-                            type: 'DELETE',
-                            url: "{{ url('/viewparticipants') }}" + '/' + idParticipants,
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function (response) {
-                                if (response.message === 'Data deleted successfully') {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Success',
-                                        text: 'Data deleted successfully',
-                                    });
-                                    reloadData();
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error',
-                                        text: 'Failed to delete data',
-                                    });
-                                }
-                            }
+                        const iD = data.train_id;
+                        var url = "{{url('/finalscore')}}"+"/"+iD;
+                        window.open(url, '_blank');
+                        // window.location.href="{{url('/viewparticipants')}}"+"/"+idSchedule;
+                        var link = $('<a>', {
+                            href: url,
+                            text: 'Go to Add Participants',
+                            class: 'btn btn-primary',
+                            target: '_blank',
                         });
-                        function reloadData() {
-                            dataTable.ajax.reload();
-                        }
+
+                        // Tambahkan tombol ke dokumen
+                        $('#buttonContainer').append(link);
                     });
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: 'info',
-                title: 'Info',
-                text: 'No data selected.',
-            });
-        }
-    });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: 'No data selected.',
+                });
+            };
+        });
+        $('#pdfscore').on('click', function(){
+            var selectData = dataTable.rows({ selected: true}).data();
+            if (selectData.length > 0) {
+                    selectData.each(function (data) {
+                        const iD = data.train_id;
+                        var url = "{{url('/pdfscore')}}"+"/"+iD;
+                        window.open(url, '_blank');
+                        // window.location.href="{{url('/viewparticipants')}}"+"/"+idSchedule;
+                        var link = $('<a>', {
+                            href: url,
+                            text: 'Go to Add Participants',
+                            class: 'btn btn-primary',
+                            target: '_blank',
+                        });
+
+                        // Tambahkan tombol ke dokumen
+                        $('#buttonContainer').append(link);
+                    });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: 'No data selected.',
+                });
+            };
+        });
   });
   $("#nik").change(function(){
                     var nik = $("#nik").val();

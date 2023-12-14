@@ -23,7 +23,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">FORM INPUT PESERTA</h4>
+            <h4 class="card-title">FORM INPUT EMPLYOEE</h4>
           </div>
           <div class="card-content">
             <div class="card-body">
@@ -56,7 +56,7 @@
                   </div>
                   <div class="col-md-6 col-12">
                     <div class="form-group">
-                      <label for="last-name-column">Nama Karyawan</label>
+                      <label for="last-name-column">Name Employee</label>
                       <select class="form-control" name="name" id="nama"> </select>
                     </div>
                 </div>

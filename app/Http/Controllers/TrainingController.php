@@ -86,10 +86,19 @@ class TrainingController extends Controller
         $dataApi = Http::get('http://10.203.68.47:90/fambook/config/api.php');
         $result = $dataApi->json();
         $training = Training::select('kode_training','name_training')->get();
-        if($request->ajax()){
-            $data = SchTraining::with('datatrain')->get();
-            return DataTables::of($data)
+        $section = auth()->user()->section;
+        if($section == "PERSONNEL"){
+            if($request->ajax()){
+                $data = DataTrain::join('schedule','tbtraining.schedule_id','=','schedule.schedule_id')->select('tbtraining.nik','tbtraining.name','tbtraining.section','schedule.name_training','schedule.name_trainer','schedule.actual','tbtraining.matepl','tbtraining.questfeedback','tbtraining.evaluation','tbtraining.history_gol','tbtraining.train_id')->get();
+                return DataTables::of($data)
+                ->make(true);
+            }
+        } else {
+            if($request->ajax()){
+            $data = DataTrain::join('schedule','tbtraining.schedule_id','=','schedule.schedule_id')->select('tbtraining.nik','tbtraining.name','tbtraining.section','schedule.name_training','schedule.name_trainer','schedule.actual','tbtraining.matepl','tbtraining.questfeedback','tbtraining.evaluation','tbtraining.history_gol','tbtraining.train_id')->where('tbtraining.section',$section)->get();
+             return DataTables::of($data)
             ->make(true);
+            }
         }
         return view('training.data_training',compact('title','result','training'));
     }
@@ -224,13 +233,14 @@ class TrainingController extends Controller
         }
         $participants->modify_by = auth()->user()->name;
         $participants->save();
-
-        $notification = [
-            'title' => 'Success!!',
-            'text' => 'Update data successfully!!',
-            'icon' => 'success',
-        ];
-        return redirect()->route('view-participants',$id)->with('notification',$notification);
+        // $schedule = SchTraining::find($id);
+        // $notification = [
+        //     'title' => 'Success!!',
+        //     'text' => 'Update data successfully!!',
+        //     'icon' => 'success',
+        // ];
+        // return redirect()->route('view-participants',$id)->with(['notification' => $notification,'schedule' => $schedule]);
+        return response()->json(['message' => 'Update data successfully']);
     }
 
     public function deleteParticipants(Request $request, $id)
@@ -243,11 +253,19 @@ class TrainingController extends Controller
     public function nilaiTraining(Request $request)
     {
         $title = "Training Assessment";
-        if($request->ajax()){
-            $emp = Http::get('http://10.203.68.47:90/fambook/config/api2.php');
-            $result = $emp->json();
-            return DataTables::of($result)
-            ->make(true);
+        $section = auth()->user()->section;
+        if($section == "PERSONNEL"){
+            if($request->ajax()){
+                $train = DataTrain::join('schedule','tbtraining.schedule_id','=','schedule.schedule_id')->select('tbtraining.nik','tbtraining.name','tbtraining.section','schedule.name_training','schedule.name_trainer','schedule.actual','tbtraining.train_id','schedule.schedule_id','tbtraining.scorea','tbtraining.scoreb')->get();
+                return DataTables::of($train)
+                ->make(true);
+            }
+        } else {
+            if($request->ajax()){
+                $train = DataTrain::join('schedule','tbtraining.schedule_id','=','schedule.schedule_id')->select('tbtraining.nik','tbtraining.name','tbtraining.section','schedule.name_training','schedule.name_trainer','schedule.actual','tbtraining.train_id','schedule.schedule_id','tbtraining.scorea','tbtraining.scoreb')->where('tbtraining.section',$section)->get();;
+                return DataTables::of($train)
+                ->make(true);
+            }
         }
         return view('training.penilaian_training',compact('title'));
     }

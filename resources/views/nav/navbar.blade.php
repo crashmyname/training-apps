@@ -24,6 +24,21 @@
                 @case ('Form Add Participants')
                     Form Add Participants
                     @break
+                @case ('View Participants')
+                    View Participants
+                    @break
+                @case ('Employee')
+                    Employee
+                    @break
+                @case ('Training Assessment')
+                    Training Assessment
+                    @break
+                @case ('Schedule Training')
+                    Schedule Training
+                    @break
+                @case ('Final Score')
+                    Final Score
+                    @break
                 @default
                     Dashboard
                     @break
@@ -69,8 +84,8 @@
                     </a>   
                 </li>
                 @endif
-                @if (!auth()->check() || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Group Leader')
-                @if($title == "Master Training" || $title == "Master User" || $title == "Master Score")
+                @if (!auth()->check() || auth()->user()->role == 'Administrator')
+                @if($title == "Master Training" || $title == "Master User" || $title == "Master Score" || $title == "Employee")
                 <li class="sidebar-item  has-sub active">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-house-gear-fill"></i> 
@@ -85,7 +100,10 @@
                         </li>                        
                         <li>
                             <a href="{{route('score')}}">Data Score</a>
-                        </li>                                             
+                        </li>  
+                        <li>
+                            <a href="{{route('employee')}}">Employee</a>
+                        </li>                                            
                     </ul>                 
                 </li>
                 @else
@@ -103,6 +121,9 @@
                         </li>                        
                         <li>
                             <a href="{{route('score')}}">Data Score</a>
+                        </li>                                             
+                        <li>
+                            <a href="{{route('employee')}}">Employee</a>
                         </li>                                             
                     </ul>                 
                 </li>
@@ -143,14 +164,14 @@
                 @if($title == "Training Assessment")
                 <li class="sidebar-item active ">
                     <a href="{{route('nilai-training')}}" class='sidebar-link'>
-                        <i class="bi bi-journal-richtext"></i> 
+                        <i class="bi bi-award"></i> 
                         <span>Training Assessment</span>
                     </a>                    
                 </li>
                 @else
                 <li class="sidebar-item  ">
                     <a href="{{route('nilai-training')}}" class='sidebar-link'>
-                        <i class="bi bi-journal-richtext"></i> 
+                        <i class="bi bi-award"></i> 
                         <span>Training Assessment</span>
                     </a>                    
                 </li>
@@ -255,6 +276,7 @@
 <script src="{{asset('/datatable/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('/datatable/responsive.bootstrap5.min.js')}}"></script>
 <script src="{{asset('/datatable/dataTables.select.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script type="text/javascript">
     document.getElementById('buttonLogout').addEventListener('click', function(e){

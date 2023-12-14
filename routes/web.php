@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::middleware(['role:Adminstrator,Group Leader,'])->group(function () {
         //Training
+        Route::get('/employee',[HomeController::class,'employee'])->name('employee');
         Route::get('/training', [TrainingController::class, 'index'])->name('training');
         Route::post('/training', [TrainingController::class, 'addTraining'])->name('add_training');
         Route::post('/training/{id}', [TrainingController::class, 'editTraining'])->name('edit_training');
@@ -44,6 +45,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/score', [ScoreController::class, 'addScore'])->name('add_score');
         Route::post('/score/{id}', [ScoreController::class, 'editScore'])->name('edit_score');
         Route::delete('/score/{id}', [ScoreController::class, 'deleteScore'])->name('delete_score');
+
+        //Nilai
+        Route::post('/score_a',[ScoreController::class, 'inputScoreA'])->name('input-scoreA');
+        Route::post('/score_b',[ScoreController::class, 'inputScoreB'])->name('input-scoreB');
+        Route::get('/finalscore/{id}',[ScoreController::class, 'finalScore'])->name('final-score');
+        Route::get('/pdfscore/{id}',[ScoreController::class, 'PdfScore'])->name('pdf-score');
+        Route::get('/testpdf',[ScoreController::class, 'test'])->name('test');
+
         //API
         Route::post('/dataapinama', [ApiController::class, 'DataApiNama'])->name('DataApi');
         Route::post('/dataapisect', [ApiController::class, 'DataApiSect'])->name('DataApiSection'); 
@@ -61,6 +70,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/participants/{id}',[TrainingController::class,'formSchtraining'])->name('form-participants');
     Route::post('/participants/{id}',[TrainingController::class,'addParticipants'])->name('add-participants');
     Route::get('/viewparticipants/{id}',[TrainingController::class,'viewParticipants'])->name('view-participants');
-    Route::post('/viewparticipants/{id}',[TrainingController::class, 'editParticipants'])->name('edit-participants');
+    Route::put('/viewparticipants/{id}',[TrainingController::class, 'editParticipants'])->name('edit-participants');
     Route::delete('/viewparticipants/{id}',[TrainingController::class, 'deleteParticipants'])->name('delete-participants');
 });
