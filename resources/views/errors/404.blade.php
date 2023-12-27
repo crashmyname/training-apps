@@ -9,7 +9,7 @@
     <title>Page Not Found - Training Apps</title>
     <link rel="stylesheet" href="{{asset('voler/dist/assets/css/bootstrap.css')}}">
     
-    <link rel="shortcut icon" href="{{asset('voler/dist/assets/images/favicon.svg')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('img/ise.png')}}" type="image/x-icon">
     <link rel="stylesheet" href="{{asset('voler/dist/assets/css/app.css')}}">
 </head>
 <body>

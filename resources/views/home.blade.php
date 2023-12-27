@@ -7,6 +7,7 @@
 </div>
 <section class="section">
 <div class="row mb-2">
+    @if(auth()->user()->role == "Administrator")
     <div class="col-12 col-md-3">
         <div class="card card-statistic">
             <div class="card-body p-0">
@@ -24,6 +25,7 @@
             </div>
         </div>
     </div>
+    @endif
     <div class="col-12 col-md-3">
         <div class="card card-statistic">
             <div class="card-body p-0">

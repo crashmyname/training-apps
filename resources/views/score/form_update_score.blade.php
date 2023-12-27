@@ -41,10 +41,14 @@
             });
             </script>
             @endif
+            <form action="{{route('update-score',['id'=>$finalscore->train_id])}}" id="updateScore" method="post">
+              @csrf
                 <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="form-group">
                       <label for="first-name-column">NIK</label>
+                      {{-- {{$finalscore->train_id}} --}}
+                      <input type="hidden" name="train_id" value="{{$finalscore->train_id}}" class="form form-control" readonly>
                       <input type="text" name="nik" value="{{$finalscore->nik}}" class="form form-control" readonly>
                     </div>
                   </div>
@@ -63,81 +67,63 @@
                     <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label for="city-column">Pemahaman terhadap isi dan tujuan materi</label>
-                        <input type="text" name="pemahaman" value="{{$scorea ? $scorea->pemahaman : null}}" class="form form-control" readonly>
+                        <input type="text" name="pemahaman" value="{{$scorea ? $scorea->pemahaman : null}}" class="form form-control" >
                     </div>
                     </div>
                     <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label for="city-column">Peningkatan Skill / Kompetensi</label>
-                        <input type="text" name="skill" value="{{$scorea ? $scorea->skill : null}}" class="form form-control" readonly>
+                        <input type="text" name="skill" value="{{$scorea ? $scorea->skill : null}}" class="form form-control" >
                     </div>
                     </div>
                     <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label for="city-column">Peningkatan Kerja</label>
-                        <input type="text" name="kinerja" value="{{$scorea ? $scorea->kinerja : null}}" class="form form-control" readonly>
+                        <input type="text" name="kinerja" value="{{$scorea ? $scorea->kinerja : null}}" class="form form-control" >
                     </div>
                     </div>
                     <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label for="city-column">Implementasi terhadap pekerjaan</label>
-                        <input type="text" name="implementasi" value="{{$scorea ? $scorea->implementasi : null}}" class="form form-control" readonly>
+                        <input type="text" name="implementasi" value="{{$scorea ? $scorea->implementasi : null}}" class="form form-control" >
                     </div>
                     </div>
                     <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label for="city-column">Melakukan Perbaikan sistem / Improvement</label>
-                        <input type="text" name="improvement" value="{{$scorea ? $scorea->improvement : null}}" class="form form-control" readonly>
+                        <input type="text" name="improvement" value="{{$scorea ? $scorea->improvement : null}}" class="form form-control" >
                     </div>
                     </div>
                     <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label for="city-column">Mampu Mengajarkan kepada orang lain</label>
-                        <input type="text" name="mengajarkan" value="{{$scorea ? $scorea->mengajarkan : null}}" class="form form-control" readonly>
+                        <input type="text" name="mengajarkan" value="{{$scorea ? $scorea->mengajarkan : null}}" class="form form-control" >
                     </div>
                     </div>
                     <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label for="city-column">Kesimpulan / Komentar Pimpinan Kerja</label>
-                        <textarea name="kesimpulan" id="" class="form form-control" readonly cols="30" rows="5">{{$scorea ? $scorea->kesimpulan : null}}</textarea>
-                        {{-- <input type="text" name="kesimpulan" value="{{$scorea ? $scorea->kesimpulan : null}}" class="form form-control" readonly> --}}
+                        <textarea name="kesimpulan" id="" cols="30" rows="2" class="form form-control">{{$scorea ? $scorea->kesimpulan : null}}</textarea>
                     </div>
                     </div>
                     <div class="col-md-6 col-12">
                     <div class="form-group">
-                        <label for="city-column">Hasil Test / TOTAL SCORE B</label>
-                        <input type="text" name="tes" value="{{$scoreb ? $scoreb->tes : "" }}" class="form form-control" readonly>
+                        <label for="city-column">Hasil Test</label>
+                        <input type="text" name="tes" value="{{$scoreb ? $scoreb->tes : "" }}" class="form form-control" >
                     </div>
                     </div>
-                    <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="city-column">Total Score A</label>
-                        <input type="text" name="scoreA" value="{{$totalscorea}}" class="form form-control" readonly>
-                    </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="city-column">Rata Rata Nilai</label>
-                        <input type="text" name="scoreA" value="{{$averagescorea}}" class="form form-control" readonly>
-                    </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="city-column">Final Score</label>
-                        <input type="text" name="scoreA" value="{{$final}}" class="form form-control" readonly>
-                    </div>
-                    </div>
-                  {{-- <div class="col-12 d-flex justify-content-end">
+                  <div class="col-12 d-flex justify-content-end">
                   <button type="button"
                     class="btn btn-primary me-1 mb-1"
-                    name="simpan" id="simpan">Submit</button>
-                    <button
+                    name="simpan" id="update">Submit</button>
+                    {{-- <button
                       type="reset"
                       class="btn btn-light-secondary me-1 mb-1"
                     >
                       Reset
                     </button> --}}
                   </div>
+                </form>
                 </div>
             </div>
           </div>
@@ -146,7 +132,7 @@
     </div>
 </section>
 <script>
-  document.getElementById('simpan').addEventListener('click',function(){
+  document.getElementById('update').addEventListener('click',function(){
     Swal.fire({
       title: 'Are you sure?',
       text: 'Is the data you entered correct?',
@@ -155,7 +141,7 @@
       confirmButtonText: 'Yes',
     }).then((result)=>{
       if(result.isConfirmed){
-        document.getElementById('dataFormParticipants').submit();
+        document.getElementById('updateScore').submit();
       }
     });
   });

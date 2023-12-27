@@ -18,21 +18,26 @@ class Role
      */
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        if(!auth()->check() || auth()->user()->role == 'Administrator'){
-            return $next($request);
-        }elseif(!auth()->check() || auth()->user()->role == 'Staff'){
-            return $next($request);
-        }elseif(!auth()->check() || auth()->user()->role == 'Group Leader'){
-            return $next($request);
-        }elseif (!auth()->check() || auth()->user()->role == 'Manager') {
-            return $next($request);
-        }elseif (!auth()->check() || auth()->user()->role == 'Deputy General') {
-            return $next($request);
-        }elseif (!auth()->check() || auth()->user()->role == 'Division Head') {
+        // if(!auth()->check() || auth()->user()->role == 'Administrator'){
+        //     return $next($request);
+        // }elseif(!auth()->check() || auth()->user()->role == 'Staff'){
+        //     return $next($request);
+        // }elseif(!auth()->check() || auth()->user()->role == 'Group Leader'){
+        //     return $next($request);
+        // }elseif (!auth()->check() || auth()->user()->role == 'Manager') {
+        //     return $next($request);
+        // }elseif (!auth()->check() || auth()->user()->role == 'Deputy General') {
+        //     return $next($request);
+        // }elseif (!auth()->check() || auth()->user()->role == 'Division Head') {
+        //     return $next($request);
+        // }
+        if(!auth()->check()){
+            return redirect('login');
+        }
+        if(in_array(auth()->user()->role, $roles)){
             return $next($request);
         }
         else{
-            // $request->session()->flash('error','You dont have access for this web');
             abort(403, 'Unauthorized action.');
         }
     }

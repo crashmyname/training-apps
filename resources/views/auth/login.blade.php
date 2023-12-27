@@ -69,7 +69,7 @@
                         </div>
                     </form>
                     <div class="divider">
-                        <div class="divider-text">PERSONNEL</div>
+                        <div class="divider-text">PERSONNEL - APPS</div>
                     </div>
                 </div>
             </div>

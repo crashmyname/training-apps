@@ -103,6 +103,36 @@ class TrainingController extends Controller
         return view('training.data_training',compact('title','result','training'));
     }
 
+    public function historyTraining(Request $request)
+    {
+        $title = "History Training";
+        if($request->ajax()){
+            $emp = Http::get('http://10.203.68.47:90/fambook/config/api2.php');
+            $result = $emp->json();
+            return DataTables::of($result)
+            ->make(true);
+        }
+        return view('training.history_training',compact('title'));
+    }
+
+    public function history(Request $request, $id)
+    {
+        $name = Http::get('http://10.203.68.47:90/fambook/config/api2.php?nik='.$id);
+        $hasilName = $name->json();
+        foreach($hasilName as $data){
+            $nama = $data['nama'];
+        }
+        $title = "History Training";
+        $title1 = "History ".$nama;
+        $nik = $id;
+        if($request->ajax()){
+            $history = DataTrain::join('schedule','tbtraining.schedule_id','=','schedule.schedule_id')->select('tbtraining.train_id','tbtraining.nik','tbtraining.name','tbtraining.section','schedule.name_training','schedule.name_trainer','schedule.actual')->where('tbtraining.nik',$nik)->get();
+            return DataTables::of($history)
+            ->make(true);
+        }
+        return view('training.history',compact('title','title1','nik'));
+    }
+
     public function ScheduleTraining(Request $request)
     {
         $title = "Schedule Training";

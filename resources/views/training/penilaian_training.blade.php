@@ -244,6 +244,7 @@
                     </div>
                 </div>
             </div>    
+            <button type="submit" id="UpdateScore" title="Update Score" class="btn icon btn-warning"><i class="bi bi-award-fill"></i> Update Score</button>
             <button type="submit" id="finalScore" title="Final Score" class="btn icon btn-info"><i class="bi bi-award-fill"></i> Final Score</button>
             <button type="submit" id="pdfscore" title="Pdf Score" class="btn icon btn-danger"><i class="bi bi-filetype-pdf"></i> Pdf Score</button>
         </div>        
@@ -303,7 +304,6 @@
               {data: 'name_training', name: 'name_training'},
               {data: 'name_trainer', name: 'name_trainer'},
               {data: 'actual', name: 'actual', width:'15%', render:function(data,type,row){
-                // return moment(data).format('ll');
                 var date = new Date(data);
                 var day = date.getDate();
                 var monthName = [
@@ -444,16 +444,17 @@
                         '<tr>' + '<td width="50%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '" readonly><input type="hidden" name="train_id" class="form-control" value="' + data.train_id + '">' + '</td>' + '</tr>' + 
                         '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '"readonly>' + '</tr>' + 
                         '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '"readonly><input type="hidden" name="schedule_id" class="form-control" value="' + data.schedule_id + '">' + '</td>' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Pemahaman terhadap isi dan tujuan materi' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="pemahaman" class="form-control">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Peningkatan Skill / Kompetensi' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="skill" class="form-control">' + '</tr>'+ 
-                        '<tr>' + '<td>' + 'Peningkatan Kerja' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="kinerja" class="form-control">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Implementasi terhadap pekerjaan' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="implementasi" class="form-control">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Melakukan Perbaikan sistem / Improvement' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="improvement" class="form-control">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Mampu Mengajarkan kepada orang lain' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="mengajarkan" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Pemahaman terhadap isi dan tujuan materi' + '<span style="color: red;">*</span>' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="pemahaman" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Peningkatan Skill / Kompetensi' + '<span style="color: red;">*</span>' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="skill" class="form-control">' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Peningkatan Kerja' + '<span style="color: red;">*</span>' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="kinerja" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Implementasi terhadap pekerjaan' + '<span style="color: red;">*</span>' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="implementasi" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Melakukan Perbaikan sistem / Improvement' + '<span style="color: red;">*</span>' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="improvement" class="form-control">' + '</tr>' + 
+                        '<tr>' + '<td>' + 'Mampu Mengajarkan kepada orang lain' + '<span style="color: red;">*</span>' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="number" name="mengajarkan" class="form-control">' + '</tr>' + 
                         '<tr>' + '<td>' + 'Kesimpulan / Komentar Pimpinan Kerja' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<textarea name="kesimpulan" class="form-control"></textarea>' + '</tr>' + 
                         '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-success" name="submitNilai" id="BtnScoreA">Submit</button>' + '</td>' + '</tr>' + '</table></form>';
                 console.log(data.schedule_id);
                 modalContent.html(info);
+                // $('#formScoreA input[name="pemahaman"]').prop('required',true);
                 $('#BtnScoreA').on('click', function(e){
                     e.preventDefault();
                     $.ajax({
@@ -568,6 +569,33 @@
         }
 
         $('#scheduleModal1').modal('show'); // Tampilkan modal
+        });
+        $('#UpdateScore').on('click', function(){
+            var selectData = dataTable.rows({ selected: true}).data();
+            if (selectData.length > 0) {
+                    selectData.each(function (data) {
+                        const iD = data.train_id;
+                        console.log(iD);
+                        var url = "{{url('/formupdatescore')}}"+"/"+iD;
+                        window.open(url, '_blank');
+                        // window.location.href="{{url('/viewparticipants')}}"+"/"+idSchedule;
+                        var link = $('<a>', {
+                            href: url,
+                            text: 'Go to Add Participants',
+                            class: 'btn btn-primary',
+                            target: '_blank',
+                        });
+
+                        // Tambahkan tombol ke dokumen
+                        $('#buttonContainer').append(link);
+                    });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: 'No data selected.',
+                });
+            };
         });
         $('#finalScore').on('click', function(){
             var selectData = dataTable.rows({ selected: true}).data();

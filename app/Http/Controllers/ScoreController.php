@@ -72,6 +72,45 @@ class ScoreController extends Controller
         return response()->json(['status' => 'success']);
     }
 
+    public function formupdateScore($id)
+    {
+        $title = "Form Update Score";
+        $finalscore = DataTrain::find($id);
+        $scorea = ScoreA::where('train_id',$id)->get()->first();
+        $scoreb = ScoreB::where('train_id',$id)->get()->first();
+        $pemahaman = $scorea ? $scorea->pemahaman : null;
+        $skill = $scorea ? $scorea->skill : null;
+        $kinerja = $scorea ? $scorea->kinerja : null;
+        $implementasi = $scorea ? $scorea->implementasi : null;
+        $improvement = $scorea ? $scorea->improvement : null;
+        $mengajarkan = $scorea ? $scorea->mengajarkan : null;
+        $kesimpulan = $scorea ? $scorea->kesimpulan : null;
+        $tes = $scoreb ? $scoreb->tes : null;
+        return view('score.form_update_score',compact('finalscore','title','scorea','scoreb'));
+    }
+
+    public function updateScore(Request $request,$id)
+    {
+        $scorea = ScoreA::firstWhere('train_id',$id);
+        $scoreb = ScoreB::firstWhere('train_id',$id);
+        $scorea->pemahaman = $request->pemahaman;
+        $scorea->skill = $request->skill;
+        $scorea->kinerja = $request->kinerja;
+        $scorea->implementasi = $request->implementasi;
+        $scorea->improvement = $request->improvement;
+        $scorea->mengajarkan = $request->mengajarkan;
+        $scorea->kesimpulan = $request->kesimpulan;
+        $scoreb->tes = $request->tes;
+        $scorea->save();
+        $scoreb->save();
+        $notification = [
+            'title' => 'Success!',
+            'text' => $request->name.' Added Successfully',
+            'icon' => 'success',
+        ];
+        return redirect()->route('form-updatescore',$id)->with('notification',$notification);
+    }
+
     public function inputScoreB(Request $request)
     {
         ScoreB::create([
@@ -95,6 +134,7 @@ class ScoreController extends Controller
     {
         $title = "Final Score";
         $finalscore = DataTrain::find($id);
+        // dd($finalscore);
         $scorea = ScoreA::where('train_id',$id)->get()->first();
         $scoreb = ScoreB::where('train_id',$id)->get()->first();
         $pemahaman = $scorea ? $scorea->pemahaman : null;
@@ -105,9 +145,9 @@ class ScoreController extends Controller
         $mengajarkan = $scorea ? $scorea->mengajarkan : null;
         $tes = $scoreb ? $scoreb->tes : null;
         $totalscorea = $pemahaman+$skill+$kinerja+$implementasi+$improvement+$mengajarkan;
-        $averagescorea = round($totalscorea/6,1);
+        $averagescorea = round($totalscorea/6,2);
         $total = $averagescorea+$tes;
-        $final = round($total/2,1);
+        $final = round($total/2,2);
         return view('score.final_score',compact('finalscore','title','scorea','scoreb','totalscorea','averagescorea','final'));
     }
 
@@ -153,12 +193,12 @@ class ScoreController extends Controller
             $fpdi->SetFont("Arial", "B", 9);
             $fpdi->SetTextColor(0,0,0);
             $fpdi->Text(51,35,$sch->name_training);
-            $fpdi->Text(51,40,$sch->actual);
+            $fpdi->Text(51,40,\Carbon\Carbon::parse($sch->actual)->format('d-M-Y'));
             $fpdi->Text(51,44.5,$sch->pic);
             $fpdi->Text(51,49,$sch->name_trainer);
-            $fpdi->Text(51,54,$finalscore->nik.'/'.$finalscore->name);
+            $fpdi->Text(51,54,$finalscore->nik.' / '.$finalscore->name);
             $fpdi->Text(51,58.5,$finalscore->section);
-            $fpdi->Text(51,63.5,$sch->duedate);
+            $fpdi->Text(51,63.5,\Carbon\Carbon::parse($sch->duedate)->format('d-M-Y'));
             $fpdi->Text(99,94.5,$pemahaman);
             $fpdi->Text(99,100.5,$skill);
             $fpdi->Text(99,107,$kinerja);

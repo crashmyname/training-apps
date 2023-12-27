@@ -27,13 +27,15 @@ Route::post('/login',[UserController::class, 'onLogin'])->name('login');
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout',[UserController::class, 'logOut'])->name('logout');
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-    Route::middleware(['role:Adminstrator,Group Leader,'])->group(function () {
+    Route::middleware(['role:Administrator,Group Leader,'])->group(function () {
         //Training
         Route::get('/employee',[HomeController::class,'employee'])->name('employee');
         Route::get('/training', [TrainingController::class, 'index'])->name('training');
         Route::post('/training', [TrainingController::class, 'addTraining'])->name('add_training');
         Route::post('/training/{id}', [TrainingController::class, 'editTraining'])->name('edit_training');
         Route::delete('/training/{id}', [TrainingController::class, 'deleteTraining'])->name('delete_training');
+        Route::get('/history',[TrainingController::class, 'historyTraining'])->name('history-training');
+        Route::get('/history/{id}',[TrainingController::class, 'history'])->name('history');
         
         //User
         Route::get('/user', [UserController::class, 'index'])->name('user');
@@ -50,6 +52,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/score_a',[ScoreController::class, 'inputScoreA'])->name('input-scoreA');
         Route::post('/score_b',[ScoreController::class, 'inputScoreB'])->name('input-scoreB');
         Route::get('/finalscore/{id}',[ScoreController::class, 'finalScore'])->name('final-score');
+        Route::get('/formupdatescore/{id}',[ScoreController::class, 'formupdateScore'])->name('form-updatescore');
+        Route::post('/updatescore/{id}',[ScoreController::class, 'updateScore'])->name('update-score');
         Route::get('/pdfscore/{id}',[ScoreController::class, 'PdfScore'])->name('pdf-score');
         Route::get('/testpdf',[ScoreController::class, 'test'])->name('test');
 

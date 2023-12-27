@@ -417,9 +417,51 @@
                 var format = day + '-' + month + '-' + year;
                 return format;
               }},
-              {data: 'replan1', name: 'replan1'},
-              {data: 'replan2', name: 'replan2'},
-              {data: 'replan3', name: 'replan3'},
+              {data: 'replan1', name: 'replan1', width: '15%', render:function(data, type, row){
+                if (data === null || data.trim() === '') {
+                    return ''; // Mengembalikan string kosong jika data kosong atau null
+                }
+
+                var date = new Date(data);
+                var day = date.getDate();
+                var monthName = [
+                    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'
+                ];
+                var month = monthName[date.getMonth()];
+                var year = date.getFullYear();
+                var format = day + '-' + month + '-' + year;
+                return format;
+              }},
+              {data: 'replan2', name: 'replan2', width: '15%', render:function(data, type, row){
+                if (data === null || data.trim() === '') {
+                    return ''; // Mengembalikan string kosong jika data kosong atau null
+                }
+
+                var date = new Date(data);
+                var day = date.getDate();
+                var monthName = [
+                    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'
+                ];
+                var month = monthName[date.getMonth()];
+                var year = date.getFullYear();
+                var format = day + '-' + month + '-' + year;
+                return format;
+              }},
+              {data: 'replan3', name: 'replan3', width: '15%', render:function(data, type, row){
+                if (data === null || data.trim() === '') {
+                    return ''; // Mengembalikan string kosong jika data kosong atau null
+                }
+
+                var date = new Date(data);
+                var day = date.getDate();
+                var monthName = [
+                    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'
+                ];
+                var month = monthName[date.getMonth()];
+                var year = date.getFullYear();
+                var format = day + '-' + month + '-' + year;
+                return format;
+              }},
               {data: 'actual', name: 'actual', width: '15%', render:function(data, type, row){
                 // return moment(data).format('ll');
                 var date = new Date(data);
@@ -589,7 +631,7 @@
                         '<tr>' + '<td>' + 'Number of participants' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="participants" class="form-control" value="' + data.participants + '">' + '</tr>'+ 
                         '<tr>' + '<td>' + 'Pic' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="pic" class="form-control" value="' + data.pic + '">' + '</tr>'+ 
                         '<tr>' + '<td>' + 'Due Date' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="date" name="duedate" class="form-control" value="' + data.duedate + '">' + '</tr>'+ 
-                        '<tr>' + '<td>' + 'Status Monitoring' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<select name="statusmonitor" class="form form-control"><option value="'+data.statusmonitor+'" selected></option><option value="On Going">On Going</option><option value="Open">Open</option><option value="Close">Close</option></select>' + '</tr>'+ 
+                        '<tr>' + '<td>' + 'Status Monitoring' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<select name="statusmonitor" class="form form-control"><option value="'+data.statusmonitor+'" selected>'+data.statusmonitor+'</option>'+(data.statusmonitor !== "On Going" ? '<option value="On Going">On Going</option>' : '') + (data.statusmonitor !== "Open" ? '<option value="Open">Open</option>' : '') + (data.statusmonitor !== "Close" ? '<option value="Close">Close</option>' : '') +'</select>' + '</tr>'+ 
                         '<tr>' + '<td>' + 'Desc' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="desc" class="form-control" value="' + data.desc + '">' + '</tr>'+ 
                         '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
                 console.log(data.schedule_id);

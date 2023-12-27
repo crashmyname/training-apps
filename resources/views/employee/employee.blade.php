@@ -24,7 +24,38 @@
   <section class="section">
     <div class="card">
         <div class="card-header">
-
+            <button type="submit" id="photo" title="view photo" class="btn btn-info" data-photo-url=""><i class="bi bi-images"></i> Photo</button>
+            <div class="modal fade" id="modalPhoto" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Info Photo</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="selectedPhoto">
+                                <table class="table table-bordered" align="center">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Photo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="selectedPhoto">
+                                        <!-- Data akan ditampilkan di sini -->
+                                    </tbody>
+                                </table>
+                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>        
         <div class="card-body">
             <table class='table table-striped' id="table1">
@@ -288,139 +319,27 @@
               }
           ]
       });
-      $('#showModalButton').on('click', function () {
+    $('#photo').on('click', function () {
         var selectedData = dataTable.rows({ selected: true }).data();
-        var modalContent = $('#selectedScheduleInfo');
+        var modalContent = $('#selectedPhoto');
 
         modalContent.empty(); // Kosongkan konten modal sebelum menambahkan informasi baru
-
         if (selectedData.length > 0) {
-            var info = '<table>';
-            selectedData.each(function (data) {
-                const createdAt = new Date(data.created_at); // Mengonversi string ke objek Date
-                const updatedAt = new Date(data.updated_at); // Mengonversi string ke objek Date
-                const formattedCreatedAt = createdAt.toLocaleString('en-US', {
-                timeZone: 'Asia/Jakarta',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                });
-                const formattedUpdatedAt = updatedAt.toLocaleString('en-US', {
-                timeZone: 'Asia/Jakarta',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                });
-                info += '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td class="form-control">' + data.nik + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.name + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.section + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Materials' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.matepl + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Question & Feedback' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.questfeedback + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Evaluation' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.evaluation + '</td>' + '</tr>'+ '<tr>' + '<td>' + 'History Golongan' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + data.history_gol + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Created at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedCreatedAt + '</td>' + '</tr>' + '<tr>' + '<td>' + 'Updated at' + '</td>' + '<td>' + ':' + '</td>' + '<td class="form-control">' + formattedUpdatedAt + '</td>' + '</tr>';
-            });
-            info += '</table>';
-            modalContent.html(info);
+            modalContent.append('<tr><th>Nama</th><th>Photo</th></tr>');
+            selectedData.each(function(data){
+                var path = 'http://10.203.68.47:90/fambook/files/photos/'+data.photo;
+                var row = $('<tr>');
+                    row.append($('<td>').text(data.nama));
+                    row.append($('<td>').append($('<img>').attr('src',path).attr('width','50%')));
+                // var img = $('<img>').attr('src',path).attr('width','50%');
+                modalContent.append(row);
+            })
         } else {
             // Jika tidak ada data yang dipilih, tampilkan pesan kosong
             modalContent.html('No data selected.');
         }
 
-        $('#scheduleModal').modal('show'); // Tampilkan modal
-        });
-      $('#editModalButton').on('click', function () {
-        var selectedData = dataTable.rows({ selected: true }).data();
-        var modalContent = $('#selectedScheduleEdit');
-
-        modalContent.empty(); // Kosongkan konten modal sebelum menambahkan informasi baru
-
-        if (selectedData.length > 0) {
-            selectedData.each(function (data) {
-                const createdAt = new Date(data.created_at); // Mengonversi string ke objek Date
-                const formattedCreatedAt = createdAt.toLocaleString('en-US', {
-                    timeZone: 'Asia/Jakarta',
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                });
-                var editData = "{{ url('/viewparticipants') }}";
-                // var foto = "{{asset('storage/profil-user/')}}";
-                var csrf = '@csrf';
-                var iD = data.train_id;
-                var info = '<form class="form form-control" id="formEditSchedule" action="' + editData + '/' + iD +'" enctype="multipart/form-data" method="post">' + csrf +
-                    '<table>' + 
-                        '<tr>' + '<td width="15%">' + 'NIK' + '</td>' + '<td width="10%">' + ':' + '</td>' + '<td>' + '<input type="text" name="nik" class="form-control" value="' + data.nik + '">' + '</td>' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Name' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="name" class="form-control" value="' + data.name + '">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Section' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="section" class="form-control" value="' + data.section + '">' + '</td>' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Materials' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="matepl" class="form-control" value="' + data.matepl + '">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'Question & Feedback' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="questfeedback" class="form-control" value="' + data.questfeedback + '">' + '</tr>'+ 
-                        '<tr>' + '<td>' + 'Evaluation' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="evaluation" class="form-control" value="' + data.evaluation + '">' + '</tr>' + 
-                        '<tr>' + '<td>' + 'History Golongan' + '</td>' + '<td>' + ':' + '</td>' + '<td>' + '<input type="text" name="history_gol" class="form-control" value="' + data.history_gol + '">' + '</tr>'+ 
-                        '<tr>' + '<td>' + '' + '</td>' + '<td>' + '' + '</td>' + '<td align="right">' + '<button type="submit" class="btn btn-warning" name="update" id="BtnUpdate">Update</button>' + '</td>' + '</tr>' + '</table></form>';
-                console.log(data.schedule_id);
-                modalContent.html(info);
-            });
-        } else {
-            // Jika tidak ada data yang dipilih, tampilkan pesan kosong
-            modalContent.html('No data selected.');
-        }
-
-        $('#scheduleModal1').modal('show'); // Tampilkan modal
-        });
-        $('#delete').on('click', function(){
-            var selectData = dataTable.rows({ selected: true}).data();
-            if (selectData.length > 0) {
-                Swal.fire({
-                title: 'Are you sure?',
-                text: 'You want to delete selected data?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    selectData.each(function (data) {
-                        const idParticipants = data.train_id;
-                        $.ajax({
-                            type: 'DELETE',
-                            url: "{{ url('/viewparticipants') }}" + '/' + idParticipants,
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function (response) {
-                                if (response.message === 'Data deleted successfully') {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Success',
-                                        text: 'Data deleted successfully',
-                                    });
-                                    reloadData();
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error',
-                                        text: 'Failed to delete data',
-                                    });
-                                }
-                            }
-                        });
-                        function reloadData() {
-                            dataTable.ajax.reload();
-                        }
-                    });
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: 'info',
-                title: 'Info',
-                text: 'No data selected.',
-            });
-        }
+        $('#modalPhoto').modal('show'); // Tampilkan modal
     });
   });
   $("#nik").change(function(){

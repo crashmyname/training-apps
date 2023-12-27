@@ -15,6 +15,8 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -73,15 +75,18 @@ class UserController extends Controller
 
     public function editUser(Request $request, $id)
     {
-        // dd($request);
         $user = User::find($id);
         if($request->filled('password')){
             $user->password = bcrypt($request->password);
         }
         if($request->hasFile('foto')){
+            $path = 'profil-user/'.$user->foto;
+            if(Storage::disk('public')->exists($path)){
+                Storage::disk('public')->delete($path);
+            }
             $oriname = $request->foto->getClientOriginalName();
             $foto = $request->file('foto')->storeAs('public/profil-user',$oriname);
-            $user->foto = $oriname;
+            $user->foto = $oriname."_".$request->name;
         }
         $user->nik = $request->has('nik') ? $request->nik : null;
         $user->name = $request->name;

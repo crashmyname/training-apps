@@ -39,6 +39,12 @@
                 @case ('Final Score')
                     Final Score
                     @break
+                @case ('History Training')
+                    History Training
+                    @break
+                @case ('Skill Map')
+                    Skill Map
+                    @break
                 @default
                     Dashboard
                     @break
@@ -55,7 +61,7 @@
     <link rel="stylesheet" href="{{asset('/datatable/buttons.dataTables.min.css')}}">
     <link rel="stylesheet" href="{{asset('/datatable/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('/datatable/responsive.bootstrap5.min.css')}}">
-    <link rel="shortcut icon" href="{{asset('img/ise.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('img/logo1.png')}}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="{{asset('/datatable/jquery-3.7.0.js')}}"></script>
 </head>
@@ -173,6 +179,38 @@
                     <a href="{{route('nilai-training')}}" class='sidebar-link'>
                         <i class="bi bi-award"></i> 
                         <span>Training Assessment</span>
+                    </a>                    
+                </li>
+                @endif
+                @if(!auth()->check() || auth()->user()->role == "Administrator")
+                @if($title == "History Training")
+                <li class="sidebar-item active ">
+                    <a href="{{route('history-training')}}" class='sidebar-link'>
+                        <i class="bi bi-clock-history"></i> 
+                        <span>History Training</span>
+                    </a>                    
+                </li>
+                @else
+                <li class="sidebar-item  ">
+                    <a href="{{route('history-training')}}" class='sidebar-link'>
+                        <i class="bi bi-clock-history"></i> 
+                        <span>History Training</span>
+                    </a>                    
+                </li>
+                @endif
+                @endif
+                @if($title == "Skill Map")
+                <li class="sidebar-item active ">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-stars"></i> 
+                        <span>Skill Map</span>
+                    </a>                    
+                </li>
+                @else
+                <li class="sidebar-item  ">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-stars"></i> 
+                        <span>Skill Map</span>
                     </a>                    
                 </li>
                 @endif

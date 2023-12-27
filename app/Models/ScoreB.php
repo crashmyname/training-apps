@@ -10,5 +10,5 @@ class ScoreB extends Model
     use HasFactory;
     public $table = 'nilaitraining_b';
     protected $guarded = ['score_b_id'];
-    protected $primaryKey = 'score_b_id';
+    protected $primaryKey = 'train_id';
 }

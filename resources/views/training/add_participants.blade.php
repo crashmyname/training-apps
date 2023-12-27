@@ -96,6 +96,7 @@
     }).then((result)=>{
       if(result.isConfirmed){
         document.getElementById('dataFormParticipants').submit();
+        document.getElementById('dataFormParticipants').reset();
       }
     });
   });
